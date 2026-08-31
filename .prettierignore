@@ -1,0 +1,7 @@
+node_modules
+__tests__/__snapshots__
+__tests__/mocks
+dist
+.vscode
+../builds
+builds
