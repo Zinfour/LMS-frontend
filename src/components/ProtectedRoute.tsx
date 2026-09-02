@@ -2,6 +2,7 @@ import { Navigate, Outlet } from 'react-router';
 import { useStore } from '@/hooks/useStore';
 
 type Role = 'student' | 'teacher';
+
 export default function ProtectedRoute({ allowedRoles }: { allowedRoles?: Role[] }) {
   const user = useStore((state) => state.user);
 

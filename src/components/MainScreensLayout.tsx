@@ -18,7 +18,7 @@ export default function MainScreensLayout() {
       )}
       <SideBar />
       <div className="flex-1 flex flex-col">
-        <main className="flex-1 max-w-250 mx-auto">
+        <main className="flex-1 ">
           <Outlet />
         </main>
         <footer className="bg-card p-8 text-center text-muted-foreground">
