@@ -122,6 +122,11 @@
       "id": 3,
       "name": "C1M1 Activity 3 Name",
       "description": "This is a description for Activity 3"
+    },
+    {
+      "id": 4,
+      "name": "C1M1 Activity 4 Name",
+      "description": "This is a description for Activity 4"
     }
   ]
 }
