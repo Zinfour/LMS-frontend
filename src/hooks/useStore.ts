@@ -1,17 +1,21 @@
 import { createWithEqualityFn } from 'zustand/traditional';
 import { shallow } from 'zustand/shallow';
 
+type User = {
+  id: number;
+  username: string;
+  email: string;
+  role: 'teacher' | 'student';
+  imageURL?: string;
+};
+
 export type State = {
-  user?: {
-    id: number;
-    username: string;
-    email: string;
-    role: 'teacher' | 'student';
-    imageURL?: string;
-  };
+  user?: User;
   count: number;
   increaseCount: () => void;
   decreaseCount: () => void;
+  logUserOut: () => void;
+  setUser: (user?: User) => void;
 };
 
 export const useStore = createWithEqualityFn<State>(
@@ -27,6 +31,8 @@ export const useStore = createWithEqualityFn<State>(
     },
     increaseCount: () => set((state) => ({ count: state.count + 1 })),
     decreaseCount: () => set((state) => ({ count: state.count - 1 })),
+    logUserOut: () => set({ user: undefined }),
+    setUser: (user?: User) => set({ user }),
   }),
   shallow,
 );

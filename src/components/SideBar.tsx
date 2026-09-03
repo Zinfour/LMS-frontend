@@ -1,5 +1,6 @@
 import { Separator } from './ui/separator';
-import { Sidebar as ShadCnSidebar, SidebarContent, SidebarFooter, SidebarHeader, useSidebar } from './ui/sidebar';
+import { Sidebar as ShadCnSidebar, SidebarContent, SidebarHeader, useSidebar } from './ui/sidebar';
+import SideBarFooter from './SideBarFooter';
 import Link from './SideBarLink';
 import { useStore } from '@/hooks/useStore';
 import { NAV_LINKS } from '@/constants';
@@ -11,7 +12,7 @@ import ThemeSwitcher from './ThemeSwitcher';
 export default function SideBar() {
   const isMobile = useIsMobile();
   const { toggleSidebar } = useSidebar();
-  const { username, imageURL, role } = useStore((state) => state.user!);
+  const { role } = useStore((state) => state.user!);
   const links = role === 'student' ? NAV_LINKS.student : NAV_LINKS.teacher;
 
   return (
@@ -42,22 +43,7 @@ export default function SideBar() {
           <ThemeSwitcher />
         </div>
       </SidebarContent>
-      <Separator className="h-px" />
-      <SidebarFooter className="flex flex-row items-center gap-4 px-4 py-4">
-        <div className="w-10 h-10 rounded-full overflow-hidden">
-          {imageURL ? (
-            <img src={imageURL} alt={username} className="w-full h-full object-cover" />
-          ) : (
-            <div className="w-full h-full rounded-full bg-muted flex items-center justify-center">
-              <span className="font-bold text-muted-foreground">{username[0]}</span>
-            </div>
-          )}
-        </div>
-        <div className="flex flex-col select-none">
-          <span>{username}</span>
-          <span className="text-xs text-muted-foreground capitalize">{role}</span>
-        </div>
-      </SidebarFooter>
+      <SideBarFooter />
     </ShadCnSidebar>
   );
 }
