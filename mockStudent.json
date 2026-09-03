@@ -1,0 +1,127 @@
+{
+  "course": {
+    "id": 1,
+    "name": "Course 1",
+    "description": "This is a description for Course 1",
+    "teacher": "Teacher 1",
+    "modules": [
+      {
+        "id": 1,
+        "name": "Module 1 Name",
+        "description": "This is a description for Module 1",
+        "activities": [
+          {
+            "id": 1,
+            "name": "C1M1 Activity 1 Name",
+            "description": "This is a description for Activity 1"
+          },
+          {
+            "id": 2,
+            "name": "C1M1 Activity 2 Name",
+            "description": "This is a description for Activity 2"
+          },
+          {
+            "id": 3,
+            "name": "C1M1 Activity 3 Name",
+            "description": "This is a description for Activity 3"
+          }
+        ]
+      },
+      {
+        "id": 2,
+        "name": "Module 2 Name",
+        "description": "This is a description for Module 2",
+        "activities": [
+          {
+            "id": 1,
+            "name": "C1M2 Activity 1 Name",
+            "description": "This is a description for Activity 1"
+          },
+          {
+            "id": 2,
+            "name": "C1M2 Activity 2 Name",
+            "description": "This is a description for Activity 2"
+          },
+          {
+            "id": 3,
+            "name": "C1M2 Activity 3 Name",
+            "description": "This is a description for Activity 3"
+          },
+          {
+            "id": 4,
+            "name": "C1M2 Activity 4 Name",
+            "description": "This is a description for Activity 4"
+          }
+        ]
+      }
+    ]
+  },
+  "modules": [
+    {
+      "id": 1,
+      "name": "Module 1 Name",
+      "description": "This is a description for Module 1",
+      "activities": [
+        {
+          "id": 1,
+          "name": "C1M1 Activity 1 Name",
+          "description": "This is a description for Activity 1"
+        },
+        {
+          "id": 2,
+          "name": "C1M1 Activity 2 Name",
+          "description": "This is a description for Activity 2"
+        },
+        {
+          "id": 3,
+          "name": "C1M1 Activity 3 Name",
+          "description": "This is a description for Activity 3"
+        }
+      ]
+    },
+    {
+      "id": 2,
+      "name": "Module 2 Name",
+      "description": "This is a description for Module 2",
+      "activities": [
+        {
+          "id": 1,
+          "name": "C1M2 Activity 1 Name",
+          "description": "This is a description for Activity 1"
+        },
+        {
+          "id": 2,
+          "name": "C1M2 Activity 2 Name",
+          "description": "This is a description for Activity 2"
+        },
+        {
+          "id": 3,
+          "name": "C1M2 Activity 3 Name",
+          "description": "This is a description for Activity 3"
+        },
+        {
+          "id": 4,
+          "name": "C1M2 Activity 4 Name",
+          "description": "This is a description for Activity 4"
+        }
+      ]
+    }
+  ],
+  "activities": [
+    {
+      "id": 1,
+      "name": "C1M1 Activity 1 Name",
+      "description": "This is a description for Activity 1"
+    },
+    {
+      "id": 2,
+      "name": "C1M1 Activity 2 Name",
+      "description": "This is a description for Activity 2"
+    },
+    {
+      "id": 3,
+      "name": "C1M1 Activity 3 Name",
+      "description": "This is a description for Activity 3"
+    }
+  ]
+}
