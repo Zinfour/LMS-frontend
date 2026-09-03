@@ -1,4 +1,5 @@
 import { Routes, Route } from 'react-router';
+import UnknownRoute from '@/screens/UnkownRoute';
 import MyCourseRoute from '@/routes/MyCourseRoute';
 import ProtectedRoute from '@/components/ProtectedRoute';
 import Login from '@/screens/Login';
@@ -15,6 +16,7 @@ export default function RoutesIndex() {
   return (
     <Routes>
       <Route path="login" element={<Login />} />
+      <Route path="*" element={<UnknownRoute />} />
 
       <Route element={<ProtectedRoute />}>
         <Route path="/" element={<MainScreensLayout />}>
