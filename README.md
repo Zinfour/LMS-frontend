@@ -1,45 +1,49 @@
-# Libraries used
+# Kursportalen Frontend
 
-## React-router
+## Getting started
 
-Our routing solution, using the declarative variant.
-Link to the docs: https://reactrouter.com/start/modes#declarative
+### 1. Install pnpm
 
-## Zustand
+We use [pnpm](https://pnpm.io/) instead of npm/yarn because it's faster and saves disk space. If you don't have it yet, install it globally with:
 
-Global state management.
-Link to the docs: https://zustand.docs.pmnd.rs/learn
+```bash
+npm install -g pnpm
+```
 
-## @tanstack/react-query
+Or check the [official installation guide](https://pnpm.io/installation) for other methods (Corepack, standalone script, etc.).
 
-Fetching + cacahe.
-Link to the docs: https://tanstack.com/query/latest/docs/framework/react/overview
+### 2. Install dependencies
 
-## axios
+From the project root, run:
 
-Fetching
-Link to the docs: https://axios.rest/pages/getting-started/examples/typescript.html
+```bash
+pnpm install
+```
 
-## shadcn
+### 3. Run the project
 
-UI components
-Link to the docs: https://ui.shadcn.com/docs
-Link to theme config: https://tweakcn.com/editor/theme
+```bash
+pnpm run dev
+```
 
-## dayjs
+This starts the Vite dev server. It'll print a local URL (usually `http://localhost:5173`) that you can open in your browser. The page will hot-reload as you edit files.
 
-Mminimalist JavaScript library that parses, validates, manipulates, and displays dates and times for modern browsers...
-Link to the docs: https://day.js.org/docs/en/display/format
+## Main libraries we use
 
-## zod
+Below are the main libraries in this project. This isn't a full list of every dependency, just the important ones you'll actually be writing code with.
 
-TypeScript-first validation library
-Link to the docs: https://zod.dev/
+| Library                                             | What it's for                                                  | Docs                                                                                  |
+| --------------------------------------------------- | -------------------------------------------------------------- | ------------------------------------------------------------------------------------- |
+| [React Router](https://reactrouter.com/)            | Our routing solution, using the declarative variant            | [Docs](https://reactrouter.com/start/modes#declarative)                               |
+| [Zustand](https://zustand-demo.pmnd.rs/)            | Global state management                                        | [Docs](https://zustand.docs.pmnd.rs/learn)                                            |
+| [TanStack Query](https://tanstack.com/query/latest) | Data fetching + caching                                        | [Docs](https://tanstack.com/query/latest/docs/framework/react/overview)               |
+| [Axios](https://axios-http.com/)                    | Making HTTP requests                                           | [Docs](https://axios.rest/pages/getting-started/examples/typescript.html)             |
+| [shadcn/ui](https://ui.shadcn.com/)                 | Our UI components (buttons, inputs, cards, etc.)               | [Docs](https://ui.shadcn.com/docs) · [Theme editor](https://tweakcn.com/editor/theme) |
+| [dayjs](https://day.js.org/)                        | Minimal library for parsing, formatting and manipulating dates | [Docs](https://day.js.org/docs/en/display/format)                                     |
+| [Zod](https://zod.dev/)                             | TypeScript-first schema/validation library                     | [Docs](https://zod.dev/)                                                              |
+| [React Hook Form](https://react-hook-form.com/)     | Handling forms with way less boilerplate                       | [Docs](https://react-hook-form.com/)                                                  |
 
-## react-hook-form
-
-Better form handling, with less code
-Link to the docs: https://react-hook-form.com/
+If you're unsure how to use one of these, check the docs link first, most of them have great examples. Otherwise, ask in the group chat.
 
 # React + TypeScript + Vite
 
