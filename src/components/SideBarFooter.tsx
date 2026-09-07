@@ -1,5 +1,5 @@
 import { Separator } from './ui/separator';
-import { SidebarFooter as ShadCnSidebarFooter, SidebarMenu, SidebarMenuButton, SidebarMenuItem } from './ui/sidebar';
+import { SidebarFooter as ShadCnSidebarFooter, SidebarMenuItem } from './ui/sidebar';
 import { useStore } from '@/hooks/useStore';
 import { useIsMobile } from '@/hooks/use-mobile';
 import {

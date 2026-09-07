@@ -1,0 +1,31 @@
+@import 'tailwindcss';
+
+@custom-variant dark (&:is(.dark *));
+
+:root {
+  --green: rgb(232, 245, 238);
+  --green-foreground: rgb(31, 122, 76);
+  --yellow: rgb(253 243 227);
+  --yellow-foreground: rgb(180 116 10);
+}
+
+.dark {
+  --green: #2e4348;
+  --green-foreground: #36cb76;
+  --yellow: rgb(72 62 46);
+  --yellow-foreground: rgb(239 142 68);
+}
+
+@theme inline {
+  --color-success: var(--green);
+  --color-success-foreground: var(--green-foreground);
+  --color-warning: var(--yellow);
+  --color-warning-foreground: var(--yellow-foreground);
+}
+
+@layer base {
+  button:not([disabled]),
+  [role='button']:not([disabled]) {
+    cursor: pointer;
+  }
+}

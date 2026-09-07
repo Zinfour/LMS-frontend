@@ -1,58 +1,96 @@
 {
   "course": {
-    "id": 1,
-    "name": "Course 1",
-    "description": "This is a description for Course 1",
-    "teacher": "Teacher 1",
+    "id": 24,
+    "title": "Frontend Development with React",
+    "description": "Build accessible, component-based interfaces with React and TypeScript. The course runs across five modules with weekly workshops, two hand-ins and a final project reviewed in pairs.",
+    "teacher": {
+      "id": 1,
+      "name": "John Doe",
+      "imageURL": null
+    },
+    "yourProgress": {
+      "totalActivities": 31,
+      "numberOfCompletedActivities": 18,
+      "progressPercentage": 62
+    },
+    "status": "in-progress",
+    "startDate": "2026-01-15",
+    "endDate": "2026-06-15",
+    "courseTag": "FE26-REACT",
+    "dueSoonActivities": [10, 11],
+    "overdueActivities": [8],
+    "currentModule": {
+      "id": 3,
+      "title": "Hooks & Context",
+      "description": "Dive into React hooks and context API for state management and side effects.",
+      "status": "in-progress",
+      "startDate": "2026-01-31",
+      "endDate": "2026-02-07",
+      "numberOfActivities": 4,
+      "numberOfResources": 2,
+      "numberOfCompletedActivities": 1,
+      "moduleNumber": 3
+    },
     "modules": [
       {
         "id": 1,
-        "name": "Module 1 Name",
-        "description": "This is a description for Module 1",
-        "activities": [
-          {
-            "id": 1,
-            "name": "C1M1 Activity 1 Name",
-            "description": "This is a description for Activity 1"
-          },
-          {
-            "id": 2,
-            "name": "C1M1 Activity 2 Name",
-            "description": "This is a description for Activity 2"
-          },
-          {
-            "id": 3,
-            "name": "C1M1 Activity 3 Name",
-            "description": "This is a description for Activity 3"
-          }
-        ]
+        "title": "Components & props",
+        "description": "Learn how to create and use React components effectively, including props and state management.",
+        "status": "completed",
+        "startDate": "2026-01-15",
+        "endDate": "2026-01-22",
+        "numberOfActivities": 5,
+        "numberOfResources": 3,
+        "numberOfCompletedActivities": 5,
+        "moduleNumber": 1
       },
       {
         "id": 2,
-        "name": "Module 2 Name",
-        "description": "This is a description for Module 2",
-        "activities": [
-          {
-            "id": 1,
-            "name": "C1M2 Activity 1 Name",
-            "description": "This is a description for Activity 1"
-          },
-          {
-            "id": 2,
-            "name": "C1M2 Activity 2 Name",
-            "description": "This is a description for Activity 2"
-          },
-          {
-            "id": 3,
-            "name": "C1M2 Activity 3 Name",
-            "description": "This is a description for Activity 3"
-          },
-          {
-            "id": 4,
-            "name": "C1M2 Activity 4 Name",
-            "description": "This is a description for Activity 4"
-          }
-        ]
+        "title": "State & Lifecycle",
+        "description": "Understand how to manage state and lifecycle methods in React components.",
+        "status": "overdue",
+        "startDate": "2026-01-23",
+        "endDate": "2026-01-30",
+        "numberOfActivities": 6,
+        "numberOfResources": 4,
+        "numberOfCompletedActivities": 5,
+        "moduleNumber": 2
+      },
+      {
+        "id": 3,
+        "title": "Hooks & Context",
+        "description": "Dive into React hooks and context API for state management and side effects.",
+        "status": "in-progress",
+        "startDate": "2026-01-31",
+        "endDate": "2026-02-07",
+        "numberOfActivities": 4,
+        "numberOfResources": 2,
+        "numberOfCompletedActivities": 1,
+        "moduleNumber": 3
+      },
+      {
+        "id": 4,
+        "title": "Advanced Patterns",
+        "description": "Explore advanced React patterns for building scalable and maintainable applications.",
+        "status": "not-started",
+        "startDate": "2026-02-08",
+        "endDate": "2026-02-15",
+        "numberOfActivities": 5,
+        "numberOfResources": 3,
+        "numberOfCompletedActivities": 0,
+        "moduleNumber": 4
+      },
+      {
+        "id": 5,
+        "title": "Testing & Debugging",
+        "description": "Learn how to test and debug React applications effectively.",
+        "status": "not-started",
+        "startDate": "2026-02-16",
+        "endDate": "2026-02-23",
+        "numberOfActivities": 4,
+        "numberOfResources": 2,
+        "numberOfCompletedActivities": 0,
+        "moduleNumber": 5
       }
     ]
   },
