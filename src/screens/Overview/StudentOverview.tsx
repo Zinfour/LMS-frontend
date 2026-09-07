@@ -77,22 +77,18 @@ export default function StudentOverview() {
 
   return (
     <div className="space-y-6 p-4 sm:p-6 lg:p-8">
-      <section className="rounded-xl bg-slate-900 p-6 text-slate-50 ring-1 ring-black/5 dark:bg-slate-800 dark:ring-white/10">
+      <section className="rounded-xl p-6 ring-1 ring-border bg-foreground text-background dark:bg-card dark:text-foreground">
         <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
           <div className="space-y-1">
             <h1 className="text-2xl font-semibold">
               Hi {firstName} <span aria-hidden="true">👋</span>
             </h1>
-            <p className="text-sm text-slate-300">
+            <p className="text-sm text-background/80 dark:text-foreground/80">
               You have {kpis.dueThisWeek} {kpis.dueThisWeek === 1 ? 'activity' : 'activities'} due this week.
             </p>
           </div>
           <div className="flex flex-wrap gap-3">
-            <Button
-              variant="secondary"
-              disabled
-              title="Coming soon"
-              className="bg-white text-slate-900 hover:bg-white">
+            <Button variant="secondary" disabled title="Coming soon">
               This week
             </Button>
             <Link to="/my-course" className={buttonVariants({ variant: 'default' })}>
