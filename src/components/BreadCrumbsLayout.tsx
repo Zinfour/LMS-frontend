@@ -68,7 +68,9 @@ export default function BreadCrumbsLayout({ routes }: Props) {
           })}
         </BreadcrumbList>
       </Breadcrumb>
-      <Outlet />
+      <div className="max-w-7xl">
+        <Outlet />
+      </div>
     </div>
   );
 }
