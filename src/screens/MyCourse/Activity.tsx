@@ -3,6 +3,7 @@ import useGetActivityById from '@/hooks/useGetActivityById';
 import { useStore } from '@/hooks/useStore';
 import { Card, CardContent, CardHeader } from '@/components/ui/card';
 import ResourceCard from '@/components/ResourceCard';
+import dayjs from 'dayjs';
 
 export default function Activity() {
   const user = useStore((state) => state.user);
@@ -28,6 +29,7 @@ export default function Activity() {
             </CardHeader>
             <CardContent>
               <p className="text-muted-foreground">{activity.description}</p>
+              <p className="text-muted-foreground pt-2">{`Deadline: ${dayjs(activity.deadline).format('DD/MM/YYYY')}`}</p>
             </CardContent>
           </Card>
           {/* TextMaterial */}

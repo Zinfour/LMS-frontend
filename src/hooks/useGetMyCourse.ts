@@ -24,6 +24,7 @@ export interface Activity {
   textMaterial?: string;
   instructions?: string;
   resources: Resource[];
+  deadline: string;
 }
 
 export interface Resource {
