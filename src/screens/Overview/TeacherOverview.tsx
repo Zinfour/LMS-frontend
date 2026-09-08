@@ -41,7 +41,7 @@ function spellOut(n: number) {
   return NUMBER_WORDS[n] ?? String(n);
 }
 
-// Statuses the teacher can act on right now — the only ones "Needs your review" shows.
+// Statuses the teacher can/should act on right now - based on urgency - the only ones "Needs your review" shows.
 type ActionableReviewStatus = Extract<TeacherReviewStatus, 'late-awaiting' | 'awaiting-feedback'>;
 
 // Lower shows first. `late-awaiting` is the higher-priority action.
@@ -57,7 +57,15 @@ function isActionable(
 }
 
 function ReviewStatusBadge({ status }: { status: ActionableReviewStatus }) {
-  if (status === 'late-awaiting') return <Badge variant="destructive">Late · awaiting</Badge>;
+  if (status === 'late-awaiting') {
+    return (
+      <Badge
+        variant="outline"
+        className="border-red-300 bg-red-50 text-red-700 dark:border-red-900 dark:bg-red-950/40 dark:text-red-400">
+        Late · awaiting
+      </Badge>
+    );
+  }
   return (
     <Badge
       variant="outline"
@@ -104,7 +112,7 @@ export default function TeacherOverview() {
   const awaiting = kpis.awaitingFeedback.value;
   const courseCount = courses.length;
 
-  // Action queue: only submissions the teacher can act on now, higher-priority
+  // Action queue: highest priority submissions the teacher should act on first.
   // status first, then longest-waiting first within a status.
   const reviewItems = reviewQueue
     .filter(isActionable)
