@@ -23,14 +23,14 @@ export default function Activity() {
       {activity && (
         <div className="gap-4 flex flex-col">
           {/* Headliner card */}
-          <Card>
+          <Card className='bg-foreground text-background dark:bg-card dark:text-foreground'>
             <CardHeader>
               <h2 className="text-2xl font-bold">{activity.name}</h2>
             </CardHeader>
             <CardContent>
-              <p className="text-muted-foreground">{activity.description}</p>
+              <p className="text-background/80 dark:text-muted-foreground">{activity.description}</p>
               {activity.deadline && (
-                <p className="text-muted-foreground pt-2">{`Deadline: ${dayjs(activity.deadline).format('DD/MM/YYYY')}`}</p>
+                <p className="text-background/80 dark:text-muted-foreground pt-2">{`Deadline: ${dayjs(activity.deadline).format('DD/MM/YYYY')}`}</p>
               )}
             </CardContent>
           </Card>
