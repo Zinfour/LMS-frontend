@@ -33,7 +33,7 @@ export default function SideBar() {
         </div>
       </SidebarHeader>
       <SidebarContent className="px-4">
-        <nav className="bg-card flex flex-col gap-4">
+        <nav className="flex flex-col gap-2">
           {links.map(({ link, label, icon }) => (
             <Link key={link} to={link} label={label} icon={icon} />
           ))}
