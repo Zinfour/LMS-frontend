@@ -29,7 +29,9 @@ export default function Activity() {
             </CardHeader>
             <CardContent>
               <p className="text-muted-foreground">{activity.description}</p>
-              <p className="text-muted-foreground pt-2">{`Deadline: ${dayjs(activity.deadline).format('DD/MM/YYYY')}`}</p>
+              {activity.deadline && (
+                <p className="text-muted-foreground pt-2">{`Deadline: ${dayjs(activity.deadline).format('DD/MM/YYYY')}`}</p>
+              )}
             </CardContent>
           </Card>
           {/* TextMaterial */}
