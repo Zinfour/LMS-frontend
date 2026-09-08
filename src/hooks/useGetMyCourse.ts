@@ -20,6 +20,17 @@ export interface Activity {
   id: number;
   name: string;
   description: string;
+  activityType: string;
+  textMaterial?: string;
+  instructions?: string;
+  resources: Resource[];
+}
+
+export interface Resource {
+  name: string;
+  url: string;
+  mime: string;
+  description: string;
 }
 
 const useGetMyCourse = ({ userId }: { userId?: number }) => {
