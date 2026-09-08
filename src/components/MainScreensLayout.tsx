@@ -21,9 +21,6 @@ export default function MainScreensLayout() {
         <main className="flex-1 ">
           <Outlet />
         </main>
-        <footer className="bg-card p-8 text-center text-muted-foreground">
-          <p>Footer Content</p>
-        </footer>
       </div>
     </div>
   );
