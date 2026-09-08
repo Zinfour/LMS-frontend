@@ -121,7 +121,7 @@ export default function MyCourse() {
 
   return (
     <div>
-      <Card className="lg:px-2 lg:py-6 max-w-7xl bg-card-foreground">
+      <Card className="lg:px-2 lg:py-6 bg-card-foreground">
         <CardContent className="flex flex-col sm:flex-row gap-4 lg:gap-10 text-card">
           <div>
             <div className="flex gap-2 items-center text-xs text-card/60 mb-5">
