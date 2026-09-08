@@ -45,7 +45,7 @@ export default function Activity() {
                 <h2 className="text-2xl font-bold">Instructions</h2>
               </CardHeader>
               <CardContent>
-                <p className="text-muted-foreground whitespace-pre-wrap">{activity.instructions}</p>
+                <p className="text-foreground whitespace-pre-wrap">{activity.instructions}</p>
               </CardContent>
             </Card>
           )}

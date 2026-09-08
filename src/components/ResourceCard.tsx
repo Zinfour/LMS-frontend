@@ -30,7 +30,7 @@ export default function ResourceCard({
 
   return (
     <a href={resource.url} target="_blank" rel="noreferrer">
-      <Card className="flex flex-row items-center gap-3 p-4 hover:bg-muted">
+      <Card className="flex flex-row items-center gap-3 p-2 hover:bg-muted max-w-100">
         <div className={`p-2 shrink-0 rounded-md ${color}`}>
           <Icon className="h-5 w-5" />
         </div>

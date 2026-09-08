@@ -185,7 +185,8 @@
         {
           "name": "Link to seminar",
           "url": "https://linktoseminar.wtf",
-          "mime": "text/html"
+          "mime": "text/html",
+          "description": ""
         }
       ]
     },
