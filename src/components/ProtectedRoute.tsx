@@ -1,10 +1,10 @@
 import { Navigate, Outlet } from 'react-router';
-import { useStore } from '@/hooks/useStore';
+import { usePersistentStore } from '@/hooks/usePersistentStore';
 
 type Role = 'student' | 'teacher';
 
 export default function ProtectedRoute({ allowedRoles }: { allowedRoles?: Role[] }) {
-  const user = useStore((state) => state.user);
+  const user = usePersistentStore((state) => state.user);
 
   // if(isLoading) {
   // 	return <LoadingState />

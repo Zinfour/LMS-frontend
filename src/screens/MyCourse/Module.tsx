@@ -1,13 +1,13 @@
 import React from 'react';
 import { useParams, Link } from 'react-router';
 import useGetModuleById from '@/hooks/useGetModuleById';
-import { useStore } from '@/hooks/useStore';
+import { usePersistentStore } from '@/hooks/usePersistentStore';
 import { Separator } from '@/components/ui/separator';
 import { Card, CardContent, CardHeader } from '@/components/ui/card';
 import dayjs from 'dayjs';
 import ActivityCard from '@/components/ActivityCard';
 import { Progress } from '@/components/ui/progress';
-import { Button, buttonVariants } from '@/components/ui/button';
+import { buttonVariants } from '@/components/ui/button';
 
 const MODULE = {
   id: 3,
@@ -96,7 +96,7 @@ const MODULE = {
 };
 
 export default function CourseModule() {
-  const user = useStore((state) => state.user);
+  const user = usePersistentStore((state) => state.user);
   const { moduleId } = useParams();
   const { data: module, isLoading, error } = useGetModuleById({ moduleId: Number(moduleId), userId: user?.id });
 

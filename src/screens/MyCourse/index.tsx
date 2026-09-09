@@ -7,7 +7,7 @@ import { Progress } from '@/components/ui/progress';
 import { Separator } from '@/components/ui/separator';
 import UserImage from '@/components/UserImage';
 import useGetMyCourse from '@/hooks/useGetMyCourse';
-import { useStore } from '@/hooks/useStore';
+import { usePersistentStore } from '@/hooks/usePersistentStore';
 import dayjs from 'dayjs';
 
 const COURSE = {
@@ -108,7 +108,7 @@ const COURSE = {
 };
 
 export default function MyCourse() {
-  const user = useStore((state) => state.user);
+  const user = usePersistentStore((state) => state.user);
   const { data: myCourse, isLoading, error } = useGetMyCourse({ userId: user?.id });
 
   if (isLoading) {

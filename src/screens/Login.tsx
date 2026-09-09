@@ -7,8 +7,11 @@ import { Field, FieldError, FieldGroup, FieldLabel } from '@/components/ui/field
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Separator } from '@/components/ui/separator';
-import { useStore } from '@/hooks/useStore';
-import { useNavigate } from 'react-router';
+import { usePersistentStore } from '@/hooks/usePersistentStore';
+import { Navigate, useNavigate } from 'react-router';
+import axios from 'axios';
+import { setLogoutOnTokenExpiredTimeout } from '@/lib/utils';
+import { API_BASE_URL } from '@/constants';
 
 const BADGES = ['Course', 'Module', 'Activity', 'Resource'];
 
@@ -20,7 +23,7 @@ const formSchema = z.object({
 
 export default function Login() {
   const navigate = useNavigate();
-  const setUser = useStore((state) => state.setUser);
+  const { setUser, user } = usePersistentStore((state) => ({ setUser: state.setUser, user: state.user }));
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     mode: 'onBlur',
@@ -31,29 +34,32 @@ export default function Login() {
     },
   });
 
+  if (user) {
+    return <Navigate to="/" replace />;
+  }
+
   const handleFormSubmit = async ({ email, password, keepLogin }: z.infer<typeof formSchema>) => {
     console.log({ email, password, keepLogin });
 
-    // TODO: Update this with real stuff
-    if (email === 'student@gmail.com') {
+    try {
+      const response = await axios.post(`${API_BASE_URL}/auth/login`, {
+        email,
+        password,
+      });
+
+      const userData = response.data;
+      setLogoutOnTokenExpiredTimeout(userData.token);
       setUser({
-        id: 1,
-        username: 'Elin Sandström',
-        email: 'elin@sandstrom.com',
-        role: 'student',
-        imageURL:
-          'https://images.unsplash.com/photo-1740252117070-7aa2955b25f8?q=80&w=200&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
+        id: userData.userId,
+        username: userData.name,
+        email: userData.email,
+        role: userData.role,
+        imageURL: userData.imageUrl,
+        token: userData.token,
       });
       navigate('/', { replace: true });
-    } else if (email === 'teacher@gmail.com') {
-      setUser({
-        id: 10,
-        username: 'John Doe',
-        email: 'john@doe.com',
-        role: 'teacher',
-      });
-      navigate('/', { replace: true });
-    } else {
+    } catch (error) {
+      console.log('Error during login', error);
       form.setError('email', { type: 'manual', message: undefined });
       form.setError('password', { type: 'manual', message: 'Invalid email or password' });
     }
