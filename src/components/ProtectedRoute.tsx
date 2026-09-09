@@ -14,7 +14,7 @@ export default function ProtectedRoute({ allowedRoles }: { allowedRoles?: Role[]
     return <Navigate to="/login" replace />;
   }
 
-  if (allowedRoles && !allowedRoles.includes(user.role)) {
+  if (allowedRoles && !allowedRoles.includes(user.role.toLocaleLowerCase() as Role)) {
     return <Navigate to="/" replace />;
   }
 
