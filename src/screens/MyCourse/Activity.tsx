@@ -1,9 +1,9 @@
 import { useParams } from 'react-router';
 import useGetActivityById from '@/hooks/useGetActivityById';
-import { useStore } from '@/hooks/useStore';
+import { usePersistentStore } from '@/hooks/usePersistentStore';
 
 export default function Activity() {
-  const user = useStore((state) => state.user);
+  const user = usePersistentStore((state) => state.user);
   const { activityId } = useParams();
   const { data: activity, isLoading, error } = useGetActivityById({ activityId: Number(activityId), userId: user?.id });
 

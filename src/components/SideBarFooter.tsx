@@ -1,6 +1,6 @@
 import { Separator } from './ui/separator';
 import { SidebarFooter as ShadCnSidebarFooter, SidebarMenuItem } from './ui/sidebar';
-import { useStore } from '@/hooks/useStore';
+import { usePersistentStore } from '@/hooks/usePersistentStore';
 import { useIsMobile } from '@/hooks/use-mobile';
 import {
   DropdownMenu,
@@ -37,7 +37,7 @@ export default function SideBarFooter() {
   const {
     user: { username, imageURL, role },
     logUserOut,
-  } = useStore((state) => ({
+  } = usePersistentStore((state) => ({
     user: state.user!,
     logUserOut: state.logUserOut,
   }));

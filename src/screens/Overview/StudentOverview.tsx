@@ -4,11 +4,11 @@ import { Badge } from '@/components/ui/badge';
 import { Button, buttonVariants } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
 import { Skeleton } from '@/components/ui/skeleton';
-import { useStore } from '@/hooks/useStore';
 import { useStudentOverview } from './useOverviewData';
 import type { StudentDeadlineStatus } from './overview.types';
 import KpiCard from './KpiCard';
 import StudentCourseCard from './StudentCourseCard';
+import { usePersistentStore } from '@/hooks/usePersistentStore';
 
 // Bold line above each deadline, e.g. "YESTERDAY" or "THU 3 SEP · 23:59".
 function formatDeadlineDate(iso: string) {
@@ -52,7 +52,7 @@ function DeadlineBadge({ status }: { status: StudentDeadlineStatus }) {
 }
 
 export default function StudentOverview() {
-  const user = useStore((state) => state.user);
+  const user = usePersistentStore((state) => state.user);
   const { data, isLoading } = useStudentOverview();
   const firstName = user?.username?.split(' ')[0] ?? 'there';
 

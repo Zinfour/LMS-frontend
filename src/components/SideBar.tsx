@@ -2,7 +2,7 @@ import { Separator } from './ui/separator';
 import { Sidebar as ShadCnSidebar, SidebarContent, SidebarHeader, useSidebar } from './ui/sidebar';
 import SideBarFooter from './SideBarFooter';
 import Link from './SideBarLink';
-import { useStore } from '@/hooks/useStore';
+import { usePersistentStore } from '@/hooks/usePersistentStore';
 import { NAV_LINKS } from '@/constants';
 import { MdOutlineCheckBoxOutlineBlank, MdOutlineClose } from 'react-icons/md';
 import { useIsMobile } from '@/hooks/use-mobile';
@@ -12,7 +12,7 @@ import ThemeSwitcher from './ThemeSwitcher';
 export default function SideBar() {
   const isMobile = useIsMobile();
   const { toggleSidebar } = useSidebar();
-  const { role } = useStore((state) => state.user!);
+  const { role } = usePersistentStore((state) => state.user!);
   const links = role === 'student' ? NAV_LINKS.student : NAV_LINKS.teacher;
 
   return (
