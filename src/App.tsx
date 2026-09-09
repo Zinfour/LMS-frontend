@@ -36,7 +36,7 @@ function App() {
 
   return (
     <SidebarProvider>
-      <div className="bg-background text-foreground">
+      <div className="bg-background text-foreground flex w-full">
         <RoutesIndex />
       </div>
     </SidebarProvider>

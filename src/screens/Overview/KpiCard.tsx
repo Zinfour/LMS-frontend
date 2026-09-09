@@ -5,11 +5,13 @@ interface KpiCardProps {
   label: string;
   value: number;
   /** Total number of activities. */  total?: number;
+  /** Small line under the value (ex "Oldest: 3 days ago"). Rendered only when provided. */
+  caption?: string;
   /** Sets the color at the top of the card. */
   accentClassName?: string;
 }
 
-export default function KpiCard({ label, value, total, accentClassName }: KpiCardProps) {
+export default function KpiCard({ label, value, total, caption, accentClassName }: KpiCardProps) {
   return (
     <Card className={cn('gap-0 border-t-4 border-t-border', accentClassName)}>
       <CardContent className="flex flex-col gap-1">
@@ -18,6 +20,7 @@ export default function KpiCard({ label, value, total, accentClassName }: KpiCar
           {value}
           {total != null && <span className="ml-1 text-base font-normal text-muted-foreground">/ {total}</span>}
         </span>
+        {caption != null && <span className="text-xs text-muted-foreground">{caption}</span>}
       </CardContent>
     </Card>
   );

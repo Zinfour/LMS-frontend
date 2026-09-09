@@ -149,12 +149,46 @@
     {
       "id": 1,
       "name": "C1M1 Activity 1 Name",
-      "description": "This is a description for Activity 1"
+      "description": "This is a description for Activity 1",
+      "activityType": "Assignment",
+      "textMaterial": "Some example text material. Maybe this shouldn't be on an assignment and the instructions are enough, but who knows!\n\n^Look at that, a double newline.",
+      "instructions": "These are some instructions:\n\n1. Do this.\n2. Do that.",
+      "resources": [
+        {
+          "name": "Use this for research",
+          "url": "https://www.google.com",
+          "mime": "text/html",
+          "description": "External Link"
+        },
+        {
+          "name": "A pdf",
+          "url": "https://realwebsite.com/file.pdf",
+          "mime": "application/pdf",
+          "description": "340 KB"
+        },
+        {
+          "name": "A zip",
+          "url": "https://realwebsite.com/file.zip",
+          "mime": "application/zip",
+          "description": "2.4 MB"
+        }
+      ],
+      "deadline": "2026-09-30T14:30:00Z"
     },
     {
       "id": 2,
       "name": "C1M1 Activity 2 Name",
-      "description": "This is a description for Activity 2"
+      "description": "This is a description for Activity 2",
+      "activityType": "Seminar",
+      "textMaterial": "Remember to prepare for the seminar by reading what I sent out to your emails!",
+      "resources": [
+        {
+          "name": "Link to seminar",
+          "url": "https://linktoseminar.wtf",
+          "mime": "text/html",
+          "description": ""
+        }
+      ]
     },
     {
       "id": 3,
