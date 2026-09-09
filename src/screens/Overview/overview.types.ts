@@ -57,7 +57,13 @@ export interface StudentOverviewData {
 
 /* Teacher */
 
-export type TeacherSubmissionStatus = 'submitted' | 'late';
+/**
+ * Teacher workflow state for a submission — what the teacher needs to do next,
+ * NOT whether/when the student handed in (that is `submittedAt`).
+ * `not-submitted` and `reviewed` are part of the full submissions vocabulary;
+ * the Overview "Needs your review" preview only shows the actionable ones.
+ */
+export type TeacherReviewStatus = 'late-awaiting' | 'awaiting-feedback' | 'not-submitted' | 'reviewed';
 export type TeacherCourseStatus = 'published' | 'draft';
 
 export interface TeacherKpi {
@@ -77,8 +83,8 @@ export interface TeacherReviewItem {
   id: string;
   studentName: string;
   activityTitle: string;
-  status: TeacherSubmissionStatus;
-  /** ISO date. Shown in the "Submitted" column (ex "5 Sep 09:14"). */
+  reviewStatus: TeacherReviewStatus;
+  /** ISO date. Shown in the "Submitted" column (ex "5 Sep 09:14"). Not a status. */
   submittedAt: string;
 }
 
