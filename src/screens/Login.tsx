@@ -11,6 +11,7 @@ import { usePersistentStore } from '@/hooks/usePersistentStore';
 import { Navigate, useNavigate } from 'react-router';
 import axios from 'axios';
 import { setLogoutOnTokenExpiredTimeout } from '@/lib/utils';
+import { API_BASE_URL } from '@/constants';
 
 const BADGES = ['Course', 'Module', 'Activity', 'Resource'];
 
@@ -41,7 +42,7 @@ export default function Login() {
     console.log({ email, password, keepLogin });
 
     try {
-      const response = await axios.post('https://localhost:7108/api/auth/login', {
+      const response = await axios.post(`${API_BASE_URL}/auth/login`, {
         email,
         password,
       });
