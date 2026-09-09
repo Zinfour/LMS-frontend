@@ -10,6 +10,7 @@ type User = {
   email: string;
   role: 'teacher' | 'student';
   token: string;
+  courseId: number;
   imageURL?: string;
 };
 

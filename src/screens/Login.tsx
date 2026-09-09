@@ -42,20 +42,21 @@ export default function Login() {
     console.log({ email, password, keepLogin });
 
     try {
-      const response = await axios.post(`${API_BASE_URL}/auth/login`, {
-        email,
+      const response = await axios.post(`${API_BASE_URL}/Auth/login`, {
+        username: email,
         password,
       });
 
       const userData = response.data;
       setLogoutOnTokenExpiredTimeout(userData.token);
       setUser({
-        id: userData.userId,
-        username: userData.name,
+        id: userData.id,
+        username: `${userData.firstName} ${userData.lastName}`,
         email: userData.email,
-        role: userData.role,
+        role: userData.role.toLowerCase() as 'student' | 'teacher',
         imageURL: userData.imageUrl,
         token: userData.token,
+        courseId: userData.courseId,
       });
       navigate('/', { replace: true });
     } catch (error) {
