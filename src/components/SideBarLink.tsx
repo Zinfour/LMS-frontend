@@ -1,4 +1,3 @@
-import { buttonVariants } from './ui/button';
 import { cn } from '../lib/utils';
 import { NavLink } from 'react-router';
 
@@ -13,12 +12,11 @@ export default function SideBarLink({ to, label, icon }: Props) {
     <NavLink
       className={({ isActive }) =>
         cn(
-          buttonVariants({ variant: 'ghost' }),
-          'hover:opacity-100 border-0 flex items-center justify-start gap-4 py-5 px-2',
-          {
-            'opacity-100 bg-primary text-primary-foreground pointer-events-none': isActive,
-            'opacity-50': !isActive,
-          },
+          'flex items-center justify-start gap-4 rounded-md px-2 py-2 text-sm font-medium',
+          'focus-visible:ring-ring focus-visible:ring-2 focus-visible:outline-none',
+          isActive
+            ? 'bg-primary text-primary-foreground hover:bg-primary/80'
+            : 'text-sidebar-foreground hover:bg-sidebar-accent hover:text-sidebar-foreground',
         )
       }
       to={to}>
