@@ -4,7 +4,7 @@ import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
 import { Skeleton } from '@/components/ui/skeleton';
 import { cn } from '@/lib/utils';
-import { useStore } from '@/hooks/useStore';
+import { usePersistentStore } from '@/hooks/usePersistentStore';
 import { useTeacherOverview } from './useOverviewData';
 import type { TeacherCourseStatus, TeacherReviewItem, TeacherReviewStatus } from './overview.types';
 import KpiCard from './KpiCard';
@@ -81,7 +81,7 @@ const COURSE_STATUS: Record<TeacherCourseStatus, { label: string; dotClass: stri
 };
 
 export default function TeacherOverview() {
-  const user = useStore((state) => state.user);
+  const user = usePersistentStore((state) => state.user);
   const { data, isLoading } = useTeacherOverview();
   const firstName = user?.username?.split(' ')[0] ?? 'there';
 
