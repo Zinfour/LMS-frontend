@@ -2,7 +2,6 @@ import { MdCheck, MdKeyboardArrowRight } from 'react-icons/md';
 import CustomBadge, { type CustomBadgeStatus } from './CustomBadge';
 import dayjs from 'dayjs';
 import { cn } from '@/lib/utils';
-import { Separator } from './ui/separator';
 
 export default function ActivityCard({ activity }: any) {
   let badgeStatus: CustomBadgeStatus = 'default';

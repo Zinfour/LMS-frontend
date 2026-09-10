@@ -1,5 +1,5 @@
+import { api } from '@/api';
 import { useQuery } from '@tanstack/react-query';
-import axios from 'axios';
 
 export interface Course {
   id: number;
@@ -34,12 +34,12 @@ export interface Resource {
   description: string;
 }
 
-const useGetMyCourse = ({ userId }: { userId?: number }) => {
+const useGetMyCourse = ({ courseid, userId }: { courseid: number; userId?: number }) => {
   return useQuery({
-    queryKey: ['myCourse', userId],
+    queryKey: ['myCourse', userId, courseid],
     queryFn: async () => {
       await new Promise((resolve) => setTimeout(resolve, 500)); // Simulate a 1-second delay
-      const response = await axios.get<Course>('http://localhost:3000/course');
+      const response = await api.get<Course>(`/courses/${courseid}`);
 
       return response.data;
     },
