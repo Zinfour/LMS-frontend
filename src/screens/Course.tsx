@@ -31,11 +31,19 @@ function CourseSummaryCard({ course }: { course: CourseModel }) {
 
   return (
     <Card>
-      {course.imageURL && <img src={course.imageURL} alt={course.name} className="h-40 w-full object-cover" />}
       <CardContent className="flex flex-col gap-3">
-        <div className="space-y-1">
-          <h1 className="text-2xl font-semibold leading-snug">{course.name}</h1>
-          <p className="text-sm text-muted-foreground">{formatPeriod(course.startDate, course.endDate)}</p>
+        <div className="flex items-start gap-4">
+          {course.imageURL && (
+            <img
+              src={course.imageURL}
+              alt=""
+              className="size-16 shrink-0 rounded-lg bg-muted object-cover sm:size-20"
+            />
+          )}
+          <div className="space-y-1">
+            <h1 className="text-2xl font-semibold leading-snug">{course.name}</h1>
+            <p className="text-sm text-muted-foreground">{formatPeriod(course.startDate, course.endDate)}</p>
+          </div>
         </div>
 
         {course.description && <p className="text-sm text-muted-foreground">{course.description}</p>}
