@@ -6,6 +6,7 @@ import Login from '@/screens/Login';
 import Settings from '@/screens/Settings';
 import Resources from '@/screens/Resources';
 import Courses from '@/screens/Courses';
+import Course from '@/screens/Course';
 import Students from '@/screens/Students';
 import MainScreensLayout from '@/components/MainScreensLayout';
 import Overview from '@/screens/Overview';
@@ -30,6 +31,7 @@ export default function RoutesIndex() {
 
           <Route element={<ProtectedRoute allowedRoles={['teacher']} />}>
             <Route path="courses" element={<Courses />} />
+            <Route path="courses/:courseId" element={<Course />} />
             <Route path="students" element={<Students />} />
             <Route path="settings" element={<Settings />} />
           </Route>

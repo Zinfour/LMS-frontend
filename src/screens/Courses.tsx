@@ -1,4 +1,5 @@
 import dayjs from 'dayjs';
+import { Link } from 'react-router';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
 import { Skeleton } from '@/components/ui/skeleton';
@@ -90,7 +91,12 @@ export default function Courses() {
       ) : (
         <div className="grid gap-4 sm:grid-cols-2">
           {courses.map((course) => (
-            <CourseCard key={course.id} course={course} />
+            <Link
+              key={course.id}
+              to={`/courses/${course.id}`}
+              className="block rounded-xl transition-transform hover:-translate-y-0.5 focus-visible:ring-2 focus-visible:ring-ring focus-visible:outline-none">
+              <CourseCard course={course} />
+            </Link>
           ))}
         </div>
       )}
