@@ -14,9 +14,9 @@ const breadCrumbsConfig = [
 ];
 
 const ModuleCrumb = () => {
-  const user = usePersistentStore((state) => state.user);
+  const user = usePersistentStore((state) => state.user!);
   const { moduleId } = useParams();
-  const { data: module } = useGetModuleById({ moduleId: Number(moduleId), userId: user?.id });
+  const { data: module } = useGetModuleById({ moduleId: Number(moduleId), courseId: user.courseId, userId: user?.id });
 
   return module?.name ?? 'Module';
 };
