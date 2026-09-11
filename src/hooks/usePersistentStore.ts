@@ -4,8 +4,8 @@ import { persist } from 'zustand/middleware';
 import { logoutTimeout } from '../lib/utils';
 import { queryClient } from './../main';
 
-type User = {
-  id: number;
+export type User = {
+  id: string;
   username: string;
   email: string;
   role: 'teacher' | 'student';
