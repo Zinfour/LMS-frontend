@@ -2,13 +2,14 @@
 import { useQuery } from '@tanstack/react-query';
 import axios from 'axios';
 import type { Activity } from './useGetMyCourse';
+import { api } from '@/api';
 
-const useGetActivityById = ({ activityId, userId }: { activityId?: number; userId?: number }) => {
+const useGetActivityById = ({ activityId, userId }: { activityId?: number; userId?: string }) => {
   return useQuery({
     queryKey: ['activity', activityId, userId],
     queryFn: async () => {
       await new Promise((resolve) => setTimeout(resolve, 500)); // Simulate a 1-second delay
-      const response = await axios.get<Activity>(`http://localhost:3000/activities/${activityId}`);
+      const response = await api.get<Activity>(`/activities/${activityId}`);
 
       return response.data;
     },
