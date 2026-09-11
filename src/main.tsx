@@ -1,5 +1,5 @@
 import { StrictMode } from 'react';
-import { createRoot } from 'react-dom/client';
+import { createRoot, type Root } from 'react-dom/client';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import './custom.css';
 import './index.css';
@@ -9,7 +9,14 @@ import { Toaster } from '@/components/ui/sonner';
 
 export const queryClient = new QueryClient();
 
-createRoot(document.getElementById('root')!).render(
+const container = document.getElementById('root')!;
+
+// Reuse the root across HMR updates instead of creating a new one each time
+const hot = import.meta.hot as { data: { root?: Root } } | undefined;
+const root = hot?.data.root ?? createRoot(container);
+if (hot) hot.data.root = root;
+
+root.render(
   <StrictMode>
     <QueryClientProvider client={queryClient}>
       <BrowserRouter>

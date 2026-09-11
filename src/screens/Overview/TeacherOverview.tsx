@@ -4,11 +4,11 @@ import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
 import { Skeleton } from '@/components/ui/skeleton';
 import { cn } from '@/lib/utils';
-import { usePersistentStore } from '@/hooks/usePersistentStore';
 import { useTeacherOverview } from './useOverviewData';
 import type { TeacherCourseStatus, TeacherReviewItem, TeacherReviewStatus } from './overview.types';
 import KpiCard from './KpiCard';
 import ProgressBar from './ProgressBar';
+import { usePersistentStore } from '@/hooks/usePersistentStore';
 
 // Bold line above each deadline, e.g. "YESTERDAY" or "MON 7 SEP · 12:00".
 function formatDeadlineDate(iso: string) {
@@ -50,9 +50,7 @@ const REVIEW_PRIORITY: Record<ActionableReviewStatus, number> = {
   'awaiting-feedback': 1,
 };
 
-function isActionable(
-  item: TeacherReviewItem,
-): item is TeacherReviewItem & { reviewStatus: ActionableReviewStatus } {
+function isActionable(item: TeacherReviewItem): item is TeacherReviewItem & { reviewStatus: ActionableReviewStatus } {
   return item.reviewStatus === 'late-awaiting' || item.reviewStatus === 'awaiting-feedback';
 }
 

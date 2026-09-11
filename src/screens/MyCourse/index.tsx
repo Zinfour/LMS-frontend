@@ -108,8 +108,8 @@ const COURSE = {
 };
 
 export default function MyCourse() {
-  const user = usePersistentStore((state) => state.user);
-  const { data: myCourse, isLoading, error } = useGetMyCourse({ userId: user?.id });
+  const user = usePersistentStore((state) => state.user!);
+  const { data: myCourse, isLoading, error } = useGetMyCourse({ courseid: user.courseId, userId: user?.id });
 
   if (isLoading) {
     return <div>Loading...</div>;
