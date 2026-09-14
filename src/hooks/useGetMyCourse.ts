@@ -43,7 +43,7 @@ export interface Module {
   currentStatus: ModuleStatus;
 }
 
-const useGetMyCourse = ({ courseid, userId }: { courseid: number; userId?: number }) => {
+const useGetMyCourse = ({ courseid, userId }: { courseid: number; userId?: string }) => {
   return useQuery({
     queryKey: ['myCourse', userId, courseid],
     queryFn: async () => {
