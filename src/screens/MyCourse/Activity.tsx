@@ -7,17 +7,12 @@ import dayjs from 'dayjs';
 import SubmissionCard from '@/components/SubmissionCard';
 import useGetSubmissionsForUser from '@/hooks/useGetSubmissionsForUser';
 import type { ActivityResource } from '@/hooks/useGetModuleById';
+import type { ResourceType } from '@/types';
 
-function getLatestResourceByType(resources: ActivityResource[], type: ActivityResource['resourceType']) {
+function getLatestResourcesByType(resources: ActivityResource[], type: ResourceType) {
   return resources
-    .filter((r) => r.resourceType === type)
-    .sort((a, b) => dayjs(b.updatedAt).valueOf() - dayjs(a.updatedAt).valueOf())[0];
-}
-
-function getLinksSortedByCreatedAt(resources: ActivityResource[]) {
-  return resources
-    .filter((r) => r.resourceType === 'Link')
-    .sort((a, b) => dayjs(a.createdAt).valueOf() - dayjs(b.createdAt).valueOf());
+    .filter((resource) => resource.resourceType === type)
+    .sort((a, b) => dayjs(b.updatedAt).valueOf() - dayjs(a.updatedAt).valueOf());
 }
 
 export default function Activity() {
@@ -45,11 +40,14 @@ export default function Activity() {
     enabled: hasAssignment,
   });
 
-  const textMaterial = activity?.resources ? getLatestResourceByType(activity.resources, 'TextMaterial') : undefined;
+  const textMaterials = activity?.resources ? getLatestResourcesByType(activity.resources, 'TextMaterial') : [];
 
-  const instructions = activity?.resources ? getLatestResourceByType(activity.resources, 'Instruction') : undefined;
+  const instructionsList = activity?.resources ? getLatestResourcesByType(activity.resources, 'Instruction') : [];
 
-  const links = activity?.resources ? getLinksSortedByCreatedAt(activity.resources) : [];
+  const links = activity?.resources ? getLatestResourcesByType(activity.resources, 'Link') : [];
+
+  const textMaterial = textMaterials[0];
+  const instructions = instructionsList[0];
 
   if (user == null) {
     return null;
@@ -113,7 +111,7 @@ export default function Activity() {
               </Card>
             )}
             {/* Resources (links only) */}
-            {links.length > 0 || user?.role === 'teacher' ? (
+            {links.length > 0 || user.role === 'teacher' ? (
               <Card>
                 <CardContent className="grid grid-cols-[repeat(auto-fit,minmax(15rem,1fr))] gap-4">
                   {links.map(
@@ -121,7 +119,11 @@ export default function Activity() {
                       item.url && (
                         <ResourceCard
                           key={item.id}
-                          resource={{ name: item.name, url: item.url, description: item.description }}
+                          resource={{
+                            name: item.name,
+                            url: item.url,
+                            description: item.description,
+                          }}
                         />
                       ),
                   )}
