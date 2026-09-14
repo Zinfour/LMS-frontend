@@ -57,6 +57,8 @@ export default function Login() {
         imageURL: userData.imageUrl,
         token: userData.token,
         courseId: userData.courseId,
+        firstName: userData.firstName,
+        lastName: userData.lastName,
       });
       navigate('/', { replace: true });
     } catch (error) {

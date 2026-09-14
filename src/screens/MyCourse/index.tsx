@@ -16,7 +16,7 @@ import { Dialog, DialogTrigger, DialogContent, DialogTitle,
 export default function MyCourse() {
   const user = usePersistentStore((state) => state.user!);
   const { data: myCourse, isLoading, error } = useGetMyCourse({ courseid: user.courseId, userId: user?.id });
-  console.log('myCourse', myCourse);
+
   if (isLoading) {
     return <div>Loading...</div>;
   }

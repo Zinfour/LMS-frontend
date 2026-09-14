@@ -24,9 +24,9 @@ function getResourceMeta(mime: string) {
 export default function ResourceCard({
   resource,
 }: {
-  resource: { name: string; url: string; mime: string; description: string };
+  resource: { name: string; url: string; mime?: string; description: string };
 }) {
-  const { icon: Icon, color } = getResourceMeta(resource.mime);
+  const { icon: Icon, color } = resource.mime ? getResourceMeta(resource.mime) : { icon: LinkIcon, color: HUES.indigo };
 
   return (
     <a href={resource.url} target="_blank" rel="noreferrer">
@@ -34,9 +34,13 @@ export default function ResourceCard({
         <div className={`p-2 shrink-0 rounded-md ${color}`}>
           <Icon className="h-5 w-5" />
         </div>
-        <div>
-          <p className="font-medium truncate">{resource.name}</p>
-          <p className="text-sm text-muted-foreground truncate">{resource.description}</p>
+        <div className="min-w-0">
+          <p className="font-medium truncate" title={resource.name}>
+            {resource.name}
+          </p>
+          <p className="text-sm text-muted-foreground truncate" title={resource.description}>
+            {resource.description}
+          </p>
         </div>
       </Card>
     </a>

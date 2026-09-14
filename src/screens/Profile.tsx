@@ -1,18 +1,5 @@
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { Button } from '@/components/ui/button';
-import UserImage from '@/components/UserImage';
-import { usePersistentStore } from '@/hooks/usePersistentStore';
-import {
-  AlertDialog,
-  AlertDialogAction,
-  AlertDialogCancel,
-  AlertDialogContent,
-  AlertDialogDescription,
-  AlertDialogFooter,
-  AlertDialogHeader,
-  AlertDialogTitle,
-  AlertDialogTrigger,
-} from '@/components/ui/alert-dialog';
+import ProfilePhotoHandler from '@/components/ProfilePhotoHandler';
 import { Field, FieldLabel } from '@/components/ui/field';
 import { Textarea } from '@/components/ui/textarea';
 import { Switch } from '@/components/ui/switch';
@@ -20,9 +7,10 @@ import { Separator } from '@/components/ui/separator';
 import PlaceholderNotice from '@/components/PlaceholderNotice';
 import StudentProfileCourseInfoCards from '@/components/StudentProfileCourseInfoCards';
 import ProfileDelete from '@/components/ProfileDelete';
+import { usePersistentStore } from '@/hooks/usePersistentStore';
 
 export default function Profile() {
-  const { user } = usePersistentStore((state) => ({ user: state.user! })); // Get the user from the store
+  const user = usePersistentStore((state) => state.user!);
 
   return (
     <div className="px-5 py-6 max-w-7xl w-full">
@@ -31,43 +19,7 @@ export default function Profile() {
         <div className="flex-2">
           <Card>
             <CardContent>
-              <div className="flex gap-4 items-center">
-                <UserImage size="large" username={user.username} imageURL={user.imageURL} />
-                <div>
-                  <h2 className="text-2xl font-bold">{user.username}</h2>
-                  <div className="mt-2">
-                    <Button
-                      variant="secondary"
-                      className="px-4 py-4 mr-2"
-                      onClick={() => console.log('Change photo clicked')}>
-                      Change photo
-                    </Button>
-                    <AlertDialog>
-                      <AlertDialogTrigger
-                        render={
-                          <Button disabled={!user.imageURL} variant="destructive" className="px-4 py-4">
-                            Remove
-                          </Button>
-                        }
-                      />
-                      <AlertDialogContent>
-                        <AlertDialogHeader>
-                          <AlertDialogTitle>Are you sure?</AlertDialogTitle>
-                          <AlertDialogDescription>
-                            Are you sure you want to remove your profile photo? This action cannot be undone.
-                          </AlertDialogDescription>
-                        </AlertDialogHeader>
-                        <AlertDialogFooter>
-                          <AlertDialogCancel>Cancel</AlertDialogCancel>
-                          <AlertDialogAction onClick={() => console.log('Continue clicked')} variant="destructive">
-                            Continue
-                          </AlertDialogAction>
-                        </AlertDialogFooter>
-                      </AlertDialogContent>
-                    </AlertDialog>
-                  </div>
-                </div>
-              </div>
+              <ProfilePhotoHandler />
               <div className="relative">
                 <PlaceholderNotice />
                 <Field className="mt-8">
@@ -124,7 +76,7 @@ export default function Profile() {
           </Card>
         </div>
         <div className="flex-1 flex flex-col gap-6">
-          <StudentProfileCourseInfoCards />
+          {user.role === 'student' && <StudentProfileCourseInfoCards />}
           <ProfileDelete />
         </div>
       </div>

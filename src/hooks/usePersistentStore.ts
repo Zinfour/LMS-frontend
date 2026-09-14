@@ -3,12 +3,15 @@ import { shallow } from 'zustand/shallow';
 import { persist } from 'zustand/middleware';
 import { logoutTimeout } from '../lib/utils';
 import { queryClient } from './../main';
+import type { UserRole } from '@/types';
 
 export type User = {
   id: string;
+  firstName: string;
+  lastName: string;
   username: string;
   email: string;
-  role: 'teacher' | 'student';
+  role: UserRole;
   token: string;
   courseId: number;
   imageURL?: string;
