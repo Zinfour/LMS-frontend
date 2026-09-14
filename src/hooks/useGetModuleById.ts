@@ -65,7 +65,7 @@ export interface ActivityAssignment {
   submissions: Submission[];
 }
 
-interface Submission {
+export interface Submission {
   id: number;
   createdAt: string;
   text: string;
