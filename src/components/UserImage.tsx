@@ -15,7 +15,7 @@ export default function UserImage({
         'rounded-full overflow-hidden',
         size === 'small' && 'w-8 h-8 min-w-8',
         size === 'medium' && 'w-10 h-10 min-w-10',
-        size === 'large' && 'w-14 h-14 min-w-14',
+        size === 'large' && 'w-20 h-20 min-w-20',
       )}>
       {imageURL ? (
         <img src={imageURL} alt={username} className="w-full h-full object-cover" />

@@ -11,10 +11,22 @@ import {
   AlertDialogTrigger,
 } from '@/components/ui/alert-dialog';
 import { Button } from './ui/button';
+import { useState } from 'react';
+import useDeleteProfile from '@/hooks/useDeleteProfile';
+import { usePersistentStore } from '@/hooks/usePersistentStore';
 
 export default function ProfileDelete() {
+  const [dialogOpen, setDialogOpen] = useState(false);
+  const { user, logout } = usePersistentStore((state) => ({ user: state.user!, logout: state.logUserOut })); // Get the user from the store
+  const onDeleteSuccess = () => {
+    logout();
+  };
+
+  const { mutate: deleteProfile, isPending } = useDeleteProfile(user.id, onDeleteSuccess);
+
   const handleDelete = () => {
-    console.log('Delete clicked');
+    setDialogOpen(false);
+    deleteProfile();
   };
   return (
     <Card className="border-destructive/50 border">
@@ -25,11 +37,11 @@ export default function ProfileDelete() {
         <p className="text-muted-foreground font-light">
           Removes your profile and all submissions. This cannot be undone and requires confirmation.
         </p>
-        <AlertDialog>
+        <AlertDialog open={dialogOpen} onOpenChange={setDialogOpen}>
           <AlertDialogTrigger
             render={
-              <Button variant="destructive" className="px-4 py-5 w-full mt-4">
-                Remove
+              <Button disabled={isPending} variant="destructive" className="px-4 py-5 w-full mt-4">
+                {isPending ? 'Deleting...' : 'Delete Account'}
               </Button>
             }
           />

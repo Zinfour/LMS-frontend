@@ -11,6 +11,7 @@ import {
   DropdownMenuTrigger,
 } from './ui/dropdown-menu';
 import { MdOutlineLogout, MdOutlineNavigateNext, MdOutlinePermIdentity, MdOutlineSettings } from 'react-icons/md';
+import { useNavigate } from 'react-router';
 
 const UserCard = ({ imageURL, username, role }: { imageURL?: string; username: string; role: string }) => {
   return (
@@ -33,6 +34,7 @@ const UserCard = ({ imageURL, username, role }: { imageURL?: string; username: s
 };
 
 export default function SideBarFooter() {
+  const navigate = useNavigate();
   const isMobile = useIsMobile();
   const {
     user: { username, imageURL, role },
@@ -64,11 +66,11 @@ export default function SideBarFooter() {
           </div>
           <DropdownMenuSeparator />
           <DropdownMenuGroup>
-            <DropdownMenuItem className="py-3 flex items-center gap-2">
+            <DropdownMenuItem onClick={() => navigate('/profile')} className="py-3 flex items-center gap-2">
               <MdOutlinePermIdentity className="size-5" />
               Profile
             </DropdownMenuItem>
-            <DropdownMenuItem className="py-3 flex items-center gap-2">
+            <DropdownMenuItem onClick={() => navigate('/profile')} className="py-3 flex items-center gap-2">
               <MdOutlineSettings className="size-5" />
               Settings
             </DropdownMenuItem>

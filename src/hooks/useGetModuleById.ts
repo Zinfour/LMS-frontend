@@ -83,7 +83,7 @@ interface Feedback {
   teacher: DatabaseUser;
 }
 
-const useGetModuleById = ({ moduleId, userId, courseId }: { moduleId?: number; userId?: number; courseId: number }) => {
+const useGetModuleById = ({ moduleId, userId, courseId }: { moduleId?: number; userId?: string; courseId: number }) => {
   return useQuery({
     queryKey: ['module', moduleId, userId],
     queryFn: async () => {
