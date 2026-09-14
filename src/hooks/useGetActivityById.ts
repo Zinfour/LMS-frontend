@@ -1,7 +1,5 @@
-// http://localhost:3000/activities/1
 import { useQuery } from '@tanstack/react-query';
-import axios from 'axios';
-import type { Activity } from './useGetMyCourse';
+import type { Activity } from '@/hooks/useGetModuleById';
 import { api } from '@/api';
 
 const useGetActivityById = ({ activityId, userId }: { activityId?: number; userId?: string }) => {

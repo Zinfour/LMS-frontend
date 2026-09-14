@@ -22,15 +22,15 @@ export interface Activity {
   id: number;
   createdAt: string;
   updatedAt: string;
-  type: string;
+  type?: string;
   name: string;
   startTime: string;
   endTime: string;
   description: string;
-  imageURL: string;
+  imageURL?: string;
   moduleId: number;
   completed: boolean;
-  assignment: ActivityAssignment;
+  assignment?: ActivityAssignment;
   resources: ActivityResource[];
 }
 
@@ -39,22 +39,22 @@ interface Resource {
   createdAt: string;
   updatedAt: string;
   createdByUserId: string;
-  updatedByUserId: string;
-  url: string;
+  updatedByUserId?: string;
+  url?: string;
   resourceType: ResourceType;
+  name: string;
+  description: string;
 }
 
 interface ModuleResource extends Resource {
-  name: string;
-  description: string;
   moduleId: number;
 }
 
-interface ActivityResource extends Resource {
+export interface ActivityResource extends Resource {
   activityId: number;
 }
 
-interface ActivityAssignment {
+export interface ActivityAssignment {
   id: number;
   createdAt: string;
   updatedAt: string;
@@ -65,7 +65,7 @@ interface ActivityAssignment {
   submissions: Submission[];
 }
 
-interface Submission {
+export interface Submission {
   id: number;
   createdAt: string;
   text: string;

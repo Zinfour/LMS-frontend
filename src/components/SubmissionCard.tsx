@@ -1,5 +1,3 @@
-import { api } from '@/api';
-import { API_BASE_URL } from '@/constants';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
 import { Check } from 'lucide-react';
@@ -9,28 +7,21 @@ import { Textarea } from '@/components/ui/textarea';
 import { zodResolver } from '@hookform/resolvers/zod';
 import * as z from 'zod';
 import dayjs from 'dayjs';
-import type { Activity } from '@/hooks/useGetMyCourse';
 import type { User } from '@/hooks/usePersistentStore';
-import { queryClient } from '@/main';
+import type { ActivityAssignment, Submission } from '@/hooks/useGetModuleById';
+import useCreateSubmission from '@/hooks/useCreateSubmission';
 
 const formSchema = z.object({
   textField: z.string().trim().nonempty('You cannot submit an empty answer.'),
 });
 
-export interface Submission {
-  text: string;
-  createdAt: string;
-  studentId: string;
-  assignmentId: number;
-}
-
 interface Props {
-  activity: Activity;
+  assignment: ActivityAssignment;
   submission?: Submission;
   user: User;
 }
 
-export default function SubmissionCard({ activity, submission, user }: Props) {
+export default function SubmissionCard({ assignment, submission, user }: Props) {
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     mode: 'onChange',
@@ -39,22 +30,24 @@ export default function SubmissionCard({ activity, submission, user }: Props) {
     },
   });
 
-  const handleFormSubmit = async ({ textField }: z.infer<typeof formSchema>) => {
-    try {
-      const response = await api.post(`${API_BASE_URL}/submissions`, {
-        text: textField,
+  const createSubmission = useCreateSubmission();
+
+  const handleFormSubmit = (values: z.infer<typeof formSchema>) => {
+    createSubmission.mutate(
+      {
+        text: values.textField,
         studentId: user.id,
-        assignmentId: activity.id,
-      });
-
-      await queryClient.invalidateQueries({
-        queryKey: ['submissions', user.id],
-      });
-
-      form.reset();
-    } catch (error) {
-      console.log('Error during submit.', error);
-    }
+        assignmentId: assignment.id,
+      },
+      {
+        onSuccess: () => {
+          form.reset();
+        },
+        onError: (error) => {
+          console.log('Error during submit.', error);
+        },
+      },
+    );
   };
 
   return (
@@ -94,8 +87,13 @@ export default function SubmissionCard({ activity, submission, user }: Props) {
           </CardContent>
 
           <CardFooter>
-            <Button form="submission-form" type="submit" className="mx-auto w-20 py-5">
-              Submit
+            <Button
+              form="submission-form"
+              type="submit"
+              className="mx-auto py-5"
+              disabled={createSubmission.isPending}
+            >
+              {createSubmission.isPending ? 'Submitting...' : 'Submit'}
             </Button>
           </CardFooter>
         </>
