@@ -6,6 +6,19 @@ import ResourceCard from '@/components/ResourceCard';
 import dayjs from 'dayjs';
 import SubmissionCard from '@/components/SubmissionCard';
 import useGetSubmissionsForUser from '@/hooks/useGetSubmissionsForUser';
+import type { ActivityResource } from '@/hooks/useGetModuleById';
+
+function getLatestResourceByType(resources: ActivityResource[], type: ActivityResource['resourceType']) {
+  return resources
+    .filter((r) => r.resourceType === type)
+    .sort((a, b) => dayjs(b.updatedAt).valueOf() - dayjs(a.updatedAt).valueOf())[0];
+}
+
+function getLinksSortedByCreatedAt(resources: ActivityResource[]) {
+  return resources
+    .filter((r) => r.resourceType === 'Link')
+    .sort((a, b) => dayjs(a.createdAt).valueOf() - dayjs(b.createdAt).valueOf());
+}
 
 export default function Activity() {
   const user = usePersistentStore((state) => state.user);
@@ -20,19 +33,29 @@ export default function Activity() {
     userId: user?.id,
   });
 
+  const hasAssignment = !!activity?.assignment;
+
   const {
     data: submissions,
     isLoading: isLoading2,
     error: error2,
   } = useGetSubmissionsForUser({
     userId: user?.id,
+    assignmentId: activity?.assignment?.id,
+    enabled: hasAssignment,
   });
 
-  if (user == null || submissions == undefined) {
+  const textMaterial = activity?.resources ? getLatestResourceByType(activity.resources, 'TextMaterial') : undefined;
+
+  const instructions = activity?.resources ? getLatestResourceByType(activity.resources, 'Instruction') : undefined;
+
+  const links = activity?.resources ? getLinksSortedByCreatedAt(activity.resources) : [];
+
+  if (user == null) {
     return null;
   }
 
-  if (isLoading || isLoading2) {
+  if (isLoading || (hasAssignment && isLoading2)) {
     return <div>Loading...</div>;
   }
 
@@ -40,7 +63,7 @@ export default function Activity() {
     return <div>Error: {error1.message}</div>;
   }
 
-  if (error2) {
+  if (hasAssignment && error2) {
     return <div>Error: {error2.message}</div>;
   }
 
@@ -57,49 +80,66 @@ export default function Activity() {
               </CardHeader>
               <CardContent>
                 <p className="text-background/80 dark:text-muted-foreground">{activity.description}</p>
-                {activity.deadline && (
-                  <p className="text-background/80 dark:text-muted-foreground pt-2">{`Deadline: ${dayjs(activity.deadline).format('DD/MM/YYYY')}`}</p>
+                {activity.assignment && (
+                  <p className="text-background/80 dark:text-muted-foreground pt-2">{`Deadline: ${dayjs(activity.assignment.deadline).format('DD/MM/YYYY')}`}</p>
                 )}
               </CardContent>
             </Card>
             {/* TextMaterial */}
-            {activity.textMaterial && (
+            {textMaterial && (
               <Card>
-                <CardContent>
-                  <p className="text-foreground whitespace-pre-wrap">{activity.textMaterial}</p>
+                <CardContent className="space-y-2">
+                  {textMaterial.description.split(/\r?\n/).map((line, index) => (
+                    <p key={index} className="text-foreground">
+                      {line}
+                    </p>
+                  ))}
                 </CardContent>
               </Card>
             )}
             {/* Instructions */}
-            {activity.instructions && (
+            {instructions && (
               <Card>
                 <CardHeader>
                   <h2 className="text-2xl font-bold">Instructions</h2>
                 </CardHeader>
-                <CardContent>
-                  <p className="text-foreground whitespace-pre-wrap">{activity.instructions}</p>
+                <CardContent className="space-y-2">
+                  {instructions.description.split(/\r?\n/).map((line, index) => (
+                    <p key={index} className="text-foreground">
+                      {line}
+                    </p>
+                  ))}
                 </CardContent>
               </Card>
             )}
-            {/* Resources */}
-            {activity.resources && (activity.resources.length > 0 || user?.role === 'teacher') ? (
+            {/* Resources (links only) */}
+            {links.length > 0 || user?.role === 'teacher' ? (
               <Card>
                 <CardContent className="grid grid-cols-[repeat(auto-fit,minmax(15rem,1fr))] gap-4">
-                  {activity.resources.map((item, index) => (
-                    <ResourceCard key={index} resource={item} />
-                  ))}
+                  {links.map(
+                    (item) =>
+                      item.url && (
+                        <ResourceCard
+                          key={item.id}
+                          resource={{ name: item.name, url: item.url, description: item.description }}
+                        />
+                      ),
+                  )}
                 </CardContent>
+                {/* TODO: add an add resource button here for teachers. */}
               </Card>
             ) : null}
           </div>
           {/* Right column */}
-          <div className="w-full lg:sticky lg:top-4 lg:self-start">
-            <SubmissionCard
-              activity={activity}
-              submission={submissions.length === 0 ? undefined : submissions[0]}
-              user={user}
-            />
-          </div>
+          {activity.assignment && (
+            <div className="w-full lg:sticky lg:top-4 lg:self-start">
+              <SubmissionCard
+                assignment={activity.assignment}
+                submission={submissions?.length ? submissions[0] : undefined}
+                user={user}
+              />
+            </div>
+          )}
         </div>
       )}
     </div>

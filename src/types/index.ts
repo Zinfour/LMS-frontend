@@ -1,5 +1,5 @@
 export type ActivityType = 'Seminar' | 'ELearning' | 'Practice' | 'Assignment' | 'Other';
-export type ResourceType = 'instruction' | 'textmaterial' | 'link' | 'summary' | 'reference';
+export type ResourceType = 'Instruction' | 'TextMaterial' | 'Link' | 'Summary' | 'Reference';
 export type ModuleStatus = 'completed' | 'overdue' | 'inProgress' | 'locked';
 export type UserRole = 'teacher' | 'student';
 

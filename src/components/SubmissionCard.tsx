@@ -9,9 +9,9 @@ import { Textarea } from '@/components/ui/textarea';
 import { zodResolver } from '@hookform/resolvers/zod';
 import * as z from 'zod';
 import dayjs from 'dayjs';
-import type { Activity } from '@/hooks/useGetMyCourse';
 import type { User } from '@/hooks/usePersistentStore';
 import { queryClient } from '@/main';
+import type { ActivityAssignment } from '@/hooks/useGetModuleById';
 
 const formSchema = z.object({
   textField: z.string().trim().nonempty('You cannot submit an empty answer.'),
@@ -25,12 +25,12 @@ export interface Submission {
 }
 
 interface Props {
-  activity: Activity;
+  assignment: ActivityAssignment;
   submission?: Submission;
   user: User;
 }
 
-export default function SubmissionCard({ activity, submission, user }: Props) {
+export default function SubmissionCard({ assignment, submission, user }: Props) {
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     mode: 'onChange',
@@ -44,11 +44,12 @@ export default function SubmissionCard({ activity, submission, user }: Props) {
       const response = await api.post(`${API_BASE_URL}/submissions`, {
         text: textField,
         studentId: user.id,
-        assignmentId: activity.id,
+        assignmentId: assignment.id,
       });
 
+      // TODO: we should probably use response.data to set the formdata here instead of waiting for an update.
       await queryClient.invalidateQueries({
-        queryKey: ['submissions', user.id],
+        queryKey: ['submissions', user.id, assignment.id],
       });
 
       form.reset();
