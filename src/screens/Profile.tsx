@@ -7,8 +7,11 @@ import { Separator } from '@/components/ui/separator';
 import PlaceholderNotice from '@/components/PlaceholderNotice';
 import StudentProfileCourseInfoCards from '@/components/StudentProfileCourseInfoCards';
 import ProfileDelete from '@/components/ProfileDelete';
+import { usePersistentStore } from '@/hooks/usePersistentStore';
 
 export default function Profile() {
+  const user = usePersistentStore((state) => state.user!);
+
   return (
     <div className="px-5 py-6 max-w-7xl w-full">
       <h1 className="text-2xl font-bold mb-4">Profile</h1>
@@ -73,7 +76,7 @@ export default function Profile() {
           </Card>
         </div>
         <div className="flex-1 flex flex-col gap-6">
-          <StudentProfileCourseInfoCards />
+          {user.role === 'student' && <StudentProfileCourseInfoCards />}
           <ProfileDelete />
         </div>
       </div>
