@@ -9,6 +9,9 @@ import useGetMyCourse from '@/hooks/useGetMyCourse';
 import { usePersistentStore } from '@/hooks/usePersistentStore';
 import dayjs from 'dayjs';
 import CustomBadge from '@/components/CustomBadge';
+import { Dialog, DialogTrigger, DialogContent, DialogTitle,
+  DialogHeader, DialogDescription
+ } from '@/components/ui/dialog';
 
 export default function MyCourse() {
   const user = usePersistentStore((state) => state.user!);
@@ -21,6 +24,8 @@ export default function MyCourse() {
   if (error || !myCourse) {
     return <div>Something went wrong 🫠!</div>;
   }
+
+  const otherParticipants = myCourse.students.filter((student) => student.id !== user.id);
 
   return (
     <div>
@@ -51,13 +56,46 @@ export default function MyCourse() {
             </div>
             <h1 className="text-xl lg:text-3xl font-bold mb-3">{myCourse.name}</h1>
             <h2 className="leading-relaxed text-card/60 text-sm">{myCourse.description}</h2>
-            <div className="flex items-center gap-2 mt-8">
+            <div className="flex items-center gap-3 mt-8">
               <UserImage
                 size="small"
                 username={`${myCourse.teacher.firstName} ${myCourse.teacher.lastName}`}
                 imageURL={myCourse.teacher.imageUrl}
               />
-              <p className="text-card/60">{`${myCourse.teacher.firstName} ${myCourse.teacher.lastName}`} - Teacher</p>
+              <div className="flex flex-col justify-center">
+                <p className="text-base font-medium text-card/60">{myCourse.teacher.firstName} {myCourse.teacher.lastName}</p>
+                <p className="text-sm text-card/60">Teacher</p>
+              </div>
+              <div className="h-10 w-px bg-card/20 mx-1" />
+              <Dialog>
+                <DialogTrigger className={buttonVariants({ variant: 'default' })}>
+                  View participants ({otherParticipants.length})
+                </DialogTrigger>
+
+                <DialogContent>
+                  <DialogHeader>
+                    <DialogTitle>Course participants</DialogTitle>
+                  </DialogHeader>
+                  <DialogDescription>
+                    Total {otherParticipants.length} participants in this course
+                  </DialogDescription>
+                  <div className="space-y-3 mt-2 max-h-80 overflow-y-auto pr-1">
+                    {otherParticipants.map((student) => (
+                      <div key={student.id} className="flex items-center gap-3">
+                        <UserImage
+                          size="small"
+                          username={`${student.firstName} ${student.lastName}`}
+                          imageURL={student.imageUrl}
+                        />
+                        <div>
+                          <p>{student.firstName} {student.lastName}</p>
+                          <p className="text-sm text-muted-foreground">Student</p>
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                </DialogContent>
+              </Dialog>
             </div>
           </div>
           <Separator className="my-2 h-px sm:hidden" />
