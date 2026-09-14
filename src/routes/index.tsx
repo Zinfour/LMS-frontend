@@ -1,4 +1,5 @@
 import { Routes, Route } from 'react-router';
+import Content from '@/screens/Content';
 import UnknownRoute from '@/screens/UnkownRoute';
 import MyCourseRoute from '@/routes/MyCourseRoute';
 import ProtectedRoute from '@/components/ProtectedRoute';
@@ -7,7 +8,7 @@ import Settings from '@/screens/Settings';
 import Resources from '@/screens/Resources';
 import Courses from '@/screens/Courses';
 import Course from '@/screens/Course';
-import Students from '@/screens/Students';
+import Users from '@/screens/Users';
 import MainScreensLayout from '@/components/MainScreensLayout';
 import Overview from '@/screens/Overview';
 import Calendar from '@/screens/Calendar';
@@ -32,8 +33,9 @@ export default function RoutesIndex() {
           <Route element={<ProtectedRoute allowedRoles={['teacher']} />}>
             <Route path="courses" element={<Courses />} />
             <Route path="courses/:courseId" element={<Course />} />
-            <Route path="students" element={<Students />} />
+            <Route path="users" element={<Users />} />
             <Route path="settings" element={<Settings />} />
+            <Route path="content" element={<Content />} />
           </Route>
 
           <Route path="resources" element={<Resources />} />

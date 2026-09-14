@@ -1,4 +1,5 @@
 import ModuleCard from '@/components/ModuleCard';
+import Error from '@/components/Error';
 import CustomLink from '../../components/CustomLink';
 import { Button, buttonVariants } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
@@ -9,17 +10,26 @@ import useGetMyCourse from '@/hooks/useGetMyCourse';
 import { usePersistentStore } from '@/hooks/usePersistentStore';
 import dayjs from 'dayjs';
 import CustomBadge from '@/components/CustomBadge';
+import Loading from '@/components/Loading';
 
 export default function MyCourse() {
   const user = usePersistentStore((state) => state.user!);
   const { data: myCourse, isLoading, error } = useGetMyCourse({ courseid: user.courseId, userId: user?.id });
 
   if (isLoading) {
-    return <div>Loading...</div>;
+    return (
+      <div className="py-8">
+        <Loading />
+      </div>
+    );
   }
 
   if (error || !myCourse) {
-    return <div>Something went wrong 🫠!</div>;
+    return (
+      <div className="py-8">
+        <Error />
+      </div>
+    );
   }
 
   return (
