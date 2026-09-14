@@ -77,7 +77,7 @@ export default function MyCourse() {
                     <DialogTitle>Course participants</DialogTitle>
                   </DialogHeader>
                   <DialogDescription>
-                    Total {otherParticipants.length} participants in this course
+                    {otherParticipants.length} other participants in this course
                   </DialogDescription>
                   <div className="space-y-3 mt-2 max-h-80 overflow-y-auto pr-1">
                     {otherParticipants.map((student) => (
