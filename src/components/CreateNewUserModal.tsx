@@ -26,6 +26,7 @@ import {
 } from '@/components/ui/select';
 import useCreateUser from '@/hooks/usCreateUser';
 import useEditUser from '@/hooks/useEditUser';
+import { cn } from '@/lib/utils';
 
 interface Props {
   user?: {
@@ -301,7 +302,9 @@ export default function CreateNewUserModal({ user, type = 'create' }: Props) {
     <Dialog modal open={dialogOpen} onOpenChange={setDialogOpen}>
       <DialogTrigger
         render={
-          <Button variant={type === 'create' ? 'default' : 'outline'} className="px-5 py-4 absolute right-12">
+          <Button
+            variant={type === 'create' ? 'default' : 'outline'}
+            className={cn('h-10 px-8', type === 'create' && 'absolute right-12')}>
             {type === 'create' ? 'Create New' : 'Edit'}
           </Button>
         }
