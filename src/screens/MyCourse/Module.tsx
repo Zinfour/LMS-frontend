@@ -13,6 +13,7 @@ import Loading from '@/components/Loading';
 import Error from '@/components/Error';
 import ResourceCard from '@/components/ResourceCard';
 import ActivityDialog from '@/components/ActivityDialog';
+import ResourceDialog from '@/components/ResourceDialog';
 
 export default function CourseModule() {
   const user = usePersistentStore((state) => state.user!);
@@ -129,9 +130,15 @@ export default function CourseModule() {
                           url: resource.url,
                           description: resource.description,
                         }}
+                        editDialog={
+                          isTeacher ? (
+                            <ResourceDialog moduleId={module.id} resourceType="Link" resource={resource} />
+                          ) : undefined
+                        }
                       />
                     ),
                 )}
+              {isTeacher && <ResourceDialog moduleId={module.id} resourceType="Link" buttonText="+ Add link" />}
             </div>
           </CardContent>
         </Card>

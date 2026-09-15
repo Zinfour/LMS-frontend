@@ -46,7 +46,7 @@ interface Resource {
   description: string;
 }
 
-interface ModuleResource extends Resource {
+export interface ModuleResource extends Resource {
   moduleId: number;
 }
 

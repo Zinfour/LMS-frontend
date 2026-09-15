@@ -19,24 +19,34 @@ import { Field, FieldError, FieldGroup, FieldLabel } from '@/components/ui/field
 import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
 
-import type { ActivityResource } from '@/hooks/useGetModuleById';
+import type { ActivityResource, ModuleResource } from '@/hooks/useGetModuleById';
 import type { ResourceType } from '@/types';
 import useCreateActivityResource from '@/hooks/useCreateActivityResource';
 import useUpdateActivityResource from '@/hooks/useUpdateActivityResource';
+import useCreateModuleResource from '@/hooks/useCreateModuleResource';
+import useUpdateModuleResource from '@/hooks/useUpdateModuleResource';
 
-interface Props {
+interface ActivityResourceProps {
   activityId: number;
-  resourceType: ResourceType;
+  moduleId?: never;
+  resourceType: Extract<ResourceType, 'TextMaterial' | 'Instruction' | 'Link'>;
   buttonText?: string;
   resource?: ActivityResource;
 }
 
-interface FormProps {
-  activityId: number;
-  resourceType: ResourceType;
-  resource?: ActivityResource;
-  setDialogOpen: (open: boolean) => void;
+interface ModuleResourceProps {
+  moduleId: number;
+  activityId?: never;
+  resourceType: 'Link';
+  buttonText?: string;
+  resource?: ModuleResource;
 }
+
+type Props = ActivityResourceProps | ModuleResourceProps;
+
+type FormProps = Props & {
+  setDialogOpen: (open: boolean) => void;
+};
 
 const formSchema = z.object({
   name: z.string().trim(),
@@ -46,8 +56,9 @@ const formSchema = z.object({
 
 type FormValues = z.infer<typeof formSchema>;
 
-const Form = ({ activityId, resourceType, resource, setDialogOpen }: FormProps) => {
+const Form = ({ activityId, moduleId, resourceType, resource, setDialogOpen }: FormProps) => {
   const isEditing = resource !== undefined;
+  const isModuleResource = moduleId !== undefined;
 
   const form = useForm<FormValues>({
     resolver: zodResolver(formSchema),
@@ -61,9 +72,21 @@ const Form = ({ activityId, resourceType, resource, setDialogOpen }: FormProps) 
 
   const createActivityResource = useCreateActivityResource();
   const updateActivityResource = useUpdateActivityResource();
+  const createModuleResource = useCreateModuleResource();
+  const updateModuleResource = useUpdateModuleResource();
 
-  const isPending = createActivityResource.isPending || updateActivityResource.isPending;
-  const error = createActivityResource.error || updateActivityResource.error;
+  const isPending =
+    createActivityResource.isPending ||
+    updateActivityResource.isPending ||
+    createModuleResource.isPending ||
+    updateModuleResource.isPending;
+
+  const error =
+    createActivityResource.error ||
+    updateActivityResource.error ||
+    createModuleResource.error ||
+    updateModuleResource.error;
+
   const formId = isEditing ? `edit-resource-form-${resource.id}` : 'create-resource-form';
 
   const errorMessage = axios.isAxiosError(error)
@@ -72,42 +95,61 @@ const Form = ({ activityId, resourceType, resource, setDialogOpen }: FormProps) 
       : 'Something went wrong.'
     : 'Something went wrong.';
 
+  const handleSuccess = () => {
+    form.reset();
+    setDialogOpen(false);
+  };
+
   const handleFormSubmit = (data: FormValues) => {
+    const values = {
+      name: data.name,
+      description: data.description,
+      url: data.url || undefined,
+    };
+
     if (isEditing) {
-      updateActivityResource.mutate(
-        {
-          activityId,
-          resource,
-          name: data.name,
-          description: data.description,
-          url: data.url || undefined,
-        },
-        {
-          onSuccess: () => {
-            form.reset();
-            setDialogOpen(false);
+      if (isModuleResource) {
+        updateModuleResource.mutate(
+          {
+            moduleId,
+            resource,
+            ...values,
           },
-        },
-      );
+          { onSuccess: handleSuccess },
+        );
+      } else {
+        updateActivityResource.mutate(
+          {
+            activityId,
+            resource,
+            ...values,
+          },
+          { onSuccess: handleSuccess },
+        );
+      }
 
       return;
     }
 
-    createActivityResource.mutate(
-      {
-        activityId,
-        resourceType,
-        name: data.name,
-        description: data.description,
-        url: data.url || undefined,
-      },
-      {
-        onSuccess: () => {
-          form.reset();
-          setDialogOpen(false);
+    if (isModuleResource) {
+      createModuleResource.mutate(
+        {
+          moduleId,
+          resourceType,
+          ...values,
         },
-      },
-    );
+        { onSuccess: handleSuccess },
+      );
+    } else {
+      createActivityResource.mutate(
+        {
+          activityId,
+          resourceType,
+          ...values,
+        },
+        { onSuccess: handleSuccess },
+      );
+    }
   };
 
   return (
@@ -266,10 +308,10 @@ const Form = ({ activityId, resourceType, resource, setDialogOpen }: FormProps) 
   );
 };
 
-export default function ResourceDialog({ activityId, resourceType, buttonText, resource }: Props) {
+export default function ResourceDialog(props: Props) {
   const [dialogOpen, setDialogOpen] = useState(false);
 
-  const isEditing = resource !== undefined;
+  const isEditing = props.resource !== undefined;
 
   return (
     <Dialog modal open={dialogOpen} onOpenChange={setDialogOpen}>
@@ -286,15 +328,13 @@ export default function ResourceDialog({ activityId, resourceType, buttonText, r
             </Button>
           ) : (
             <Button variant="outline" className="w-fit">
-              {buttonText}
+              {props.buttonText}
             </Button>
           )
         }
       />
 
-      {dialogOpen && (
-        <Form activityId={activityId} resourceType={resourceType} resource={resource} setDialogOpen={setDialogOpen} />
-      )}
+      {dialogOpen && <Form {...props} setDialogOpen={setDialogOpen} />}
     </Dialog>
   );
 }
