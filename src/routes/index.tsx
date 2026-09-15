@@ -5,7 +5,6 @@ import UnknownRoute from '@/screens/UnkownRoute';
 import MyCourseRoute from '@/routes/MyCourseRoute';
 import ProtectedRoute from '@/components/ProtectedRoute';
 import Login from '@/screens/Login';
-import Settings from '@/screens/Settings';
 import Resources from '@/screens/Resources';
 import Users from '@/screens/Users';
 import MainScreensLayout from '@/components/MainScreensLayout';
@@ -26,16 +25,14 @@ export default function RoutesIndex() {
           <Route element={<ProtectedRoute allowedRoles={['student']} />}>
             <Route path="my-course/*" element={<MyCourseRoute />} />
             <Route path="calendar" element={<Calendar />} />
-            <Route path="profile" element={<Profile />} />
           </Route>
 
           <Route element={<ProtectedRoute allowedRoles={['teacher']} />}>
             <Route path="courses/*" element={<TeacherCoursesRoute />} />
             <Route path="users" element={<Users />} />
-            <Route path="settings" element={<Settings />} />
             <Route path="content" element={<Content />} />
           </Route>
-
+          <Route path="profile" element={<Profile />} />
           <Route path="resources" element={<Resources />} />
         </Route>
       </Route>

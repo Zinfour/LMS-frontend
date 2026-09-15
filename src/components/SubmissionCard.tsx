@@ -90,9 +90,8 @@ export default function SubmissionCard({ assignment, submission, user }: Props) 
             <Button
               form="submission-form"
               type="submit"
-              className="mx-auto py-5"
-              disabled={createSubmission.isPending}
-            >
+              className="mx-auto py-5 w-full"
+              disabled={createSubmission.isPending}>
               {createSubmission.isPending ? 'Submitting...' : 'Submit'}
             </Button>
           </CardFooter>

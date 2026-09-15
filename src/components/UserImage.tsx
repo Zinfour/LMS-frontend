@@ -21,7 +21,7 @@ export default function UserImage({
         <img src={imageURL} alt={username} className="w-full h-full object-cover" />
       ) : (
         <div className="w-full h-full rounded-full bg-muted flex items-center justify-center">
-          <span className={cn('font-bold text-muted-foreground', size === 'large' && 'text-xl')}>{username[0]}</span>
+          <span className={cn('font-bold text-muted-foreground', size === 'large' && 'text-3xl')}>{username[0]}</span>
         </div>
       )}
     </div>

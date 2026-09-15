@@ -9,7 +9,7 @@ export default function Course() {
   const { courseId } = useParams();
   const user = usePersistentStore((state) => state.user!);
   const { data: myCourse, isLoading, error } = useGetCourseById({ courseid: Number(courseId), userId: user?.id });
-  console.log(courseId);
+
   if (isLoading) {
     return (
       <div className="py-8">

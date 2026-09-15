@@ -9,6 +9,7 @@ import useGetSubmissionsForUser from '@/hooks/useGetSubmissionsForUser';
 import type { ActivityResource } from '@/hooks/useGetModuleById';
 import type { ResourceType } from '@/types';
 import ResourceDialog from '@/components/ResourceDialog';
+import TeacherSubmissions from '@/components/TeacherSubmissions';
 
 function getLatestResourcesByType(resources: ActivityResource[], type: ResourceType) {
   return resources
@@ -159,15 +160,20 @@ export default function Activity() {
           </div>
 
           {/* Right column */}
-          {!isTeacher && activity.assignment && (
-            <div className="w-full lg:sticky lg:top-4 lg:self-start">
-              <SubmissionCard
-                assignment={activity.assignment}
-                submission={submissions?.length ? submissions[0] : undefined}
-                user={user}
-              />
-            </div>
-          )}
+          {activity.assignment &&
+            (isTeacher ? (
+              <div className="w-full lg:sticky lg:top-4 lg:self-start">
+                <TeacherSubmissions assignment={activity.assignment} />
+              </div>
+            ) : (
+              <div className="w-full lg:sticky lg:top-4 lg:self-start">
+                <SubmissionCard
+                  assignment={activity.assignment}
+                  submission={submissions?.length ? submissions[0] : undefined}
+                  user={user}
+                />
+              </div>
+            ))}
         </div>
       )}
     </div>

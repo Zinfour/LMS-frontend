@@ -6,7 +6,6 @@ const useGetActivityById = ({ activityId, userId }: { activityId?: number; userI
   return useQuery({
     queryKey: ['activity', activityId, userId],
     queryFn: async () => {
-      await new Promise((resolve) => setTimeout(resolve, 500)); // Simulate a 1-second delay
       const response = await api.get<Activity>(`/activities/${activityId}`);
 
       return response.data;

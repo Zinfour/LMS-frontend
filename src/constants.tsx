@@ -6,7 +6,6 @@ import {
   MdOutlineArticle,
   MdOutlineGroups2,
   MdOutlineToc,
-  MdOutlineSettings,
 } from 'react-icons/md';
 
 export const NAV_LINKS = {
@@ -64,9 +63,9 @@ export const NAV_LINKS = {
       icon: <MdOutlineToc className="size-6" />,
     },
     {
-      label: 'Settings',
-      link: '/settings',
-      icon: <MdOutlineSettings className="size-6" />,
+      label: 'Profile',
+      link: '/profile',
+      icon: <MdOutlinePermIdentity className="size-6" />,
     },
   ],
 };
