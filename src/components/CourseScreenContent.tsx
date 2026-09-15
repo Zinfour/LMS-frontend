@@ -25,7 +25,6 @@ interface Props {
 export default function CourseScreenContent({ course }: Props) {
   const user = usePersistentStore((state) => state.user!);
   const isStudent = user.role === 'student';
-  const otherParticipants = course.students.filter((student) => student.id !== user.id);
   return (
     <div>
       <Card className="lg:px-2 lg:py-6 bg-card-foreground">
@@ -64,16 +63,16 @@ export default function CourseScreenContent({ course }: Props) {
               <div className="h-10 w-px bg-card/20 mx-1" />
               <Dialog>
                 <DialogTrigger className={buttonVariants({ variant: 'default' })}>
-                  View participants ({otherParticipants.length})
+                  View participants ({course.students.length})
                 </DialogTrigger>
 
                 <DialogContent>
                   <DialogHeader>
                     <DialogTitle>Course participants</DialogTitle>
                   </DialogHeader>
-                  <DialogDescription>{otherParticipants.length} other participants in this course</DialogDescription>
+                  <DialogDescription>{course.students.length} participants in this course</DialogDescription>
                   <div className="space-y-3 mt-2 max-h-80 overflow-y-auto pr-1">
-                    {otherParticipants.map((student) => (
+                    {course.students.map((student) => (
                       <div key={student.id} className="flex items-center gap-3">
                         <UserImage
                           size="small"
