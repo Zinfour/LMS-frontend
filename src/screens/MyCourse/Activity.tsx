@@ -8,6 +8,7 @@ import SubmissionCard from '@/components/SubmissionCard';
 import useGetSubmissionsForUser from '@/hooks/useGetSubmissionsForUser';
 import type { ActivityResource } from '@/hooks/useGetModuleById';
 import type { ResourceType } from '@/types';
+import ResourceDialog from '@/components/ResourceDialog';
 
 function getLatestResourcesByType(resources: ActivityResource[], type: ResourceType) {
   return resources
@@ -42,12 +43,9 @@ export default function Activity() {
 
   const textMaterials = activity?.resources ? getLatestResourcesByType(activity.resources, 'TextMaterial') : [];
 
-  const instructionsList = activity?.resources ? getLatestResourcesByType(activity.resources, 'Instruction') : [];
+  const instructions = activity?.resources ? getLatestResourcesByType(activity.resources, 'Instruction') : [];
 
   const links = activity?.resources ? getLatestResourcesByType(activity.resources, 'Link') : [];
-
-  const textMaterial = textMaterials[0];
-  const instructions = instructionsList[0];
 
   if (user == null) {
     return null;
@@ -64,6 +62,8 @@ export default function Activity() {
   if (hasAssignment && error2) {
     return <div>Error: {error2.message}</div>;
   }
+
+  const isTeacher = user.role == 'teacher';
 
   return (
     <div>
@@ -84,34 +84,53 @@ export default function Activity() {
               </CardContent>
             </Card>
             {/* TextMaterial */}
-            {textMaterial && (
-              <Card>
-                <CardContent className="space-y-2">
+            {textMaterials.map((textMaterial) => (
+              <Card key={textMaterial.id} className="relative">
+                <CardContent className={isTeacher ? 'space-y-2 pb-4' : 'space-y-2'}>
                   {textMaterial.description.split(/\r?\n/).map((line, index) => (
                     <p key={index} className="text-foreground">
                       {line}
                     </p>
                   ))}
                 </CardContent>
+
+                {isTeacher && (
+                  <ResourceDialog activityId={activity.id} resourceType="TextMaterial" resource={textMaterial} />
+                )}
               </Card>
+            ))}
+
+            {isTeacher && (
+              <ResourceDialog activityId={activity.id} resourceType="TextMaterial" buttonText="+ Add text" />
             )}
+
             {/* Instructions */}
-            {instructions && (
-              <Card>
+            {instructions.map((instruction) => (
+              <Card key={instruction.id} className="relative">
                 <CardHeader>
                   <h2 className="text-2xl font-bold">Instructions</h2>
                 </CardHeader>
-                <CardContent className="space-y-2">
-                  {instructions.description.split(/\r?\n/).map((line, index) => (
+                <CardContent className={isTeacher ? 'space-y-2 pb-4' : 'space-y-2'}>
+                  {instruction.description.split(/\r?\n/).map((line, index) => (
                     <p key={index} className="text-foreground">
                       {line}
                     </p>
                   ))}
                 </CardContent>
+
+                {isTeacher && (
+                  <ResourceDialog activityId={activity.id} resourceType="Instruction" resource={instruction} />
+                )}
               </Card>
+            ))}
+
+            {isTeacher && activity.assignment && (
+              <ResourceDialog activityId={activity.id} resourceType="Instruction" buttonText="+ Add instructions" />
             )}
+
             {/* Resources (links only) */}
-            {links.length > 0 || user.role === 'teacher' ? (
+
+            {links.length > 0 && (
               <Card>
                 <CardContent className="grid grid-cols-[repeat(auto-fit,minmax(15rem,1fr))] gap-4">
                   {links.map(
@@ -124,16 +143,23 @@ export default function Activity() {
                             url: item.url,
                             description: item.description,
                           }}
+                          editDialog={
+                            isTeacher ? (
+                              <ResourceDialog activityId={activity.id} resourceType="Link" resource={item} />
+                            ) : undefined
+                          }
                         />
                       ),
                   )}
                 </CardContent>
-                {/* TODO: add an add resource button here for teachers. */}
               </Card>
-            ) : null}
+            )}
+
+            {isTeacher && <ResourceDialog activityId={activity.id} resourceType="Link" buttonText="+ Add link" />}
           </div>
+
           {/* Right column */}
-          {activity.assignment && (
+          {!isTeacher && activity.assignment && (
             <div className="w-full lg:sticky lg:top-4 lg:self-start">
               <SubmissionCard
                 assignment={activity.assignment}
