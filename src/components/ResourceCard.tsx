@@ -1,5 +1,6 @@
-import { Card } from '@/components/ui/card';
+import type { ReactNode } from 'react';
 import { FileText, Link as LinkIcon, FileArchive, File } from 'lucide-react';
+import { Card } from '@/components/ui/card';
 
 const HUES = {
   red: 'text-red-600 dark:text-red-400 bg-red-600/10 dark:bg-red-400/10 border border-red-600/20 dark:border-red-400/20',
@@ -21,28 +22,40 @@ function getResourceMeta(mime: string) {
   return { icon: File, color: HUES.neutral };
 }
 
-export default function ResourceCard({
-  resource,
-}: {
-  resource: { name: string; url: string; mime?: string; description: string };
-}) {
+interface Props {
+  resource: {
+    name: string;
+    url: string;
+    mime?: string;
+    description: string;
+  };
+  editDialog?: ReactNode;
+}
+
+export default function ResourceCard({ resource, editDialog }: Props) {
   const { icon: Icon, color } = resource.mime ? getResourceMeta(resource.mime) : { icon: LinkIcon, color: HUES.indigo };
 
   return (
-    <a href={resource.url} target="_blank" rel="noreferrer">
-      <Card className="flex flex-row items-center gap-3 p-2 hover:bg-muted max-w-100">
-        <div className={`p-2 shrink-0 rounded-md ${color}`}>
+    <Card className="relative max-w-100 p-0">
+      <a
+        href={resource.url}
+        target="_blank"
+        rel="noreferrer"
+        className={`flex flex-row items-center gap-3 p-2 ${editDialog ? 'pr-12' : ''} hover:bg-muted`}>
+        <div className={`shrink-0 rounded-md p-2 ${color}`}>
           <Icon className="h-5 w-5" />
         </div>
         <div className="min-w-0">
-          <p className="font-medium truncate" title={resource.name}>
+          <p className="truncate font-medium" title={resource.name}>
             {resource.name}
           </p>
-          <p className="text-sm text-muted-foreground truncate" title={resource.description}>
+          <p className="truncate text-sm text-muted-foreground" title={resource.description}>
             {resource.description}
           </p>
         </div>
-      </Card>
-    </a>
+      </a>
+
+      {editDialog}
+    </Card>
   );
 }
