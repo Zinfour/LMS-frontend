@@ -44,7 +44,6 @@ export default function TeacherSubmissions({ assignment }: Props) {
     };
   });
 
-  console.log(usersMappedToSubmissions);
   return (
     <section>
       <Card>
