@@ -2,10 +2,13 @@ import { Card, CardContent, CardHeader } from './ui/card';
 import { cn } from '../lib/utils';
 import dayjs from 'dayjs';
 import CustomBadge, { type CustomBadgeStatus } from './CustomBadge';
-import type { Module } from '@/hooks/useGetMyCourse';
+import type { Module } from '@/hooks/useGetCourseById';
+import { usePersistentStore } from '@/hooks/usePersistentStore';
 
 // !TODO! Update typing when we know the exact structure we get from backe
 export default function ModuleCard({ module }: { module: Module }) {
+  const user = usePersistentStore((state) => state.user!);
+  const isStudent = user.role === 'student';
   const isCompleted = module.currentStatus === 'completed';
   const isOverdue = module.currentStatus === 'overdue';
   // const isInProgress = module.currentStatus === 'in-progress';
@@ -34,7 +37,7 @@ export default function ModuleCard({ module }: { module: Module }) {
             {dayjs(module.startDate).format('DD')} - {dayjs(module.endDate).format('DD MMM')}
           </p>
         </div>
-        <CustomBadge status={badgeVariant}>{module.currentStatus}</CustomBadge>
+        {isStudent && <CustomBadge status={badgeVariant}>{module.currentStatus}</CustomBadge>}
       </CardHeader>
       <CardContent className="flex flex-col flex-1 justify-between">
         <div>
@@ -47,9 +50,11 @@ export default function ModuleCard({ module }: { module: Module }) {
             <div className="w-0.5 h-0.5 rounded-full bg-muted-foreground"></div>
             <p>{module.resourcesNumber} resources</p>
           </div>
-          <p className="font-semibold">
-            {module.numberOfCompletedActivities} / {module.activitiesNumber}
-          </p>
+          {isStudent && (
+            <p className="font-semibold">
+              {module.numberOfCompletedActivities} / {module.activitiesNumber}
+            </p>
+          )}
         </div>
       </CardContent>
     </Card>

@@ -1,5 +1,5 @@
 import React from 'react';
-import useGetMyCourse from '@/hooks/useGetMyCourse';
+import useGetCourseById from '@/hooks/useGetCourseById';
 import { usePersistentStore } from '@/hooks/usePersistentStore';
 import { Card, CardContent, CardHeader, CardTitle } from './ui/card';
 import dayjs from 'dayjs';
@@ -8,7 +8,7 @@ import { Link } from 'react-router';
 
 export default function StudentProfileCourseInfoCards() {
   const { user } = usePersistentStore((state) => ({ user: state.user! }));
-  const { data: myCourse, isLoading, error } = useGetMyCourse({ courseid: user.courseId, userId: user?.id });
+  const { data: myCourse, isLoading, error } = useGetCourseById({ courseid: user.courseId, userId: user?.id });
 
   if (isLoading) {
     return (
