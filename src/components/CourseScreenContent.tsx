@@ -25,7 +25,6 @@ interface Props {
 export default function CourseScreenContent({ course }: Props) {
   const user = usePersistentStore((state) => state.user!);
   const isStudent = user.role === 'student';
-  const otherParticipants = course.students.filter((student) => student.id !== user.id);
   return (
     <div>
       <Card className="lg:px-2 lg:py-6 bg-card-foreground">
@@ -61,36 +60,6 @@ export default function CourseScreenContent({ course }: Props) {
                 </p>
                 <p className="text-sm text-card/60">Teacher</p>
               </div>
-              <div className="h-10 w-px bg-card/20 mx-1" />
-              <Dialog>
-                <DialogTrigger className={buttonVariants({ variant: 'default' })}>
-                  View participants ({otherParticipants.length})
-                </DialogTrigger>
-
-                <DialogContent>
-                  <DialogHeader>
-                    <DialogTitle>Course participants</DialogTitle>
-                  </DialogHeader>
-                  <DialogDescription>{otherParticipants.length} other participants in this course</DialogDescription>
-                  <div className="space-y-3 mt-2 max-h-80 overflow-y-auto pr-1">
-                    {otherParticipants.map((student) => (
-                      <div key={student.id} className="flex items-center gap-3">
-                        <UserImage
-                          size="small"
-                          username={`${student.firstName} ${student.lastName}`}
-                          imageURL={student.imageUrl}
-                        />
-                        <div>
-                          <p>
-                            {student.firstName} {student.lastName}
-                          </p>
-                          <p className="text-sm text-muted-foreground">Student</p>
-                        </div>
-                      </div>
-                    ))}
-                  </div>
-                </DialogContent>
-              </Dialog>
             </div>
           </div>
           <Separator className="my-2 h-px sm:hidden" />
@@ -115,9 +84,35 @@ export default function CourseScreenContent({ course }: Props) {
                 disabled={!course.currentModuleId}>
                 Continue: Module {course.currentModuleId ?? ''}
               </CustomLink>
-              <Button variant="secondary" className="w-full py-5">
-                Course syllabus (PDF)
-              </Button>
+              <Dialog>
+                <DialogTrigger render={<Button variant="secondary" className="w-full py-5" />}>
+                  View participants ({course.students.length})
+                </DialogTrigger>
+
+                <DialogContent>
+                  <DialogHeader>
+                    <DialogTitle>Course participants</DialogTitle>
+                  </DialogHeader>
+                  <DialogDescription>{course.students.length} participants in this course</DialogDescription>
+                  <div className="space-y-3 mt-2 max-h-80 overflow-y-auto pr-1">
+                    {course.students.map((student) => (
+                      <div key={student.id} className="flex items-center gap-3">
+                        <UserImage
+                          size="small"
+                          username={`${student.firstName} ${student.lastName}`}
+                          imageURL={student.imageUrl}
+                        />
+                        <div>
+                          <p>
+                            {student.firstName} {student.lastName}
+                          </p>
+                          <p className="text-sm text-muted-foreground">Student</p>
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                </DialogContent>
+              </Dialog>
             </div>
           </div>
         </CardContent>
