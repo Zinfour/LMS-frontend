@@ -7,7 +7,6 @@ import Login from '@/screens/Login';
 import Settings from '@/screens/Settings';
 import Resources from '@/screens/Resources';
 import Courses from '@/screens/Courses';
-import Course from '@/screens/Course';
 import Users from '@/screens/Users';
 import MainScreensLayout from '@/components/MainScreensLayout';
 import Overview from '@/screens/Overview';
@@ -32,7 +31,7 @@ export default function RoutesIndex() {
 
           <Route element={<ProtectedRoute allowedRoles={['teacher']} />}>
             <Route path="courses" element={<Courses />} />
-            <Route path="courses/:courseId" element={<Course />} />
+            <Route path="courses/:courseId/*" element={<MyCourseRoute />} /> {/* HACK: all courses route to myCourse. */}
             <Route path="users" element={<Users />} />
             <Route path="settings" element={<Settings />} />
             <Route path="content" element={<Content />} />
