@@ -1,4 +1,5 @@
 import ModuleCard from '@/components/ModuleCard';
+import Error from '@/components/Error';
 import CustomLink from '../../components/CustomLink';
 import { Button, buttonVariants } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
@@ -9,20 +10,34 @@ import useGetMyCourse from '@/hooks/useGetMyCourse';
 import { usePersistentStore } from '@/hooks/usePersistentStore';
 import dayjs from 'dayjs';
 import CustomBadge from '@/components/CustomBadge';
-import { Dialog, DialogTrigger, DialogContent, DialogTitle,
-  DialogHeader, DialogDescription
- } from '@/components/ui/dialog';
+import Loading from '@/components/Loading';
+import {
+  Dialog,
+  DialogTrigger,
+  DialogContent,
+  DialogTitle,
+  DialogHeader,
+  DialogDescription,
+} from '@/components/ui/dialog';
 
 export default function MyCourse() {
   const user = usePersistentStore((state) => state.user!);
   const { data: myCourse, isLoading, error } = useGetMyCourse({ courseid: user.courseId, userId: user?.id });
 
   if (isLoading) {
-    return <div>Loading...</div>;
+    return (
+      <div className="py-8">
+        <Loading />
+      </div>
+    );
   }
 
   if (error || !myCourse) {
-    return <div>Something went wrong 🫠!</div>;
+    return (
+      <div className="py-8">
+        <Error />
+      </div>
+    );
   }
 
   const otherParticipants = myCourse.students.filter((student) => student.id !== user.id);
@@ -63,7 +78,9 @@ export default function MyCourse() {
                 imageURL={myCourse.teacher.imageUrl}
               />
               <div className="flex flex-col justify-center">
-                <p className="text-base font-medium text-card/60">{myCourse.teacher.firstName} {myCourse.teacher.lastName}</p>
+                <p className="text-base font-medium text-card/60">
+                  {myCourse.teacher.firstName} {myCourse.teacher.lastName}
+                </p>
                 <p className="text-sm text-card/60">Teacher</p>
               </div>
               <div className="h-10 w-px bg-card/20 mx-1" />
@@ -76,9 +93,7 @@ export default function MyCourse() {
                   <DialogHeader>
                     <DialogTitle>Course participants</DialogTitle>
                   </DialogHeader>
-                  <DialogDescription>
-                    {otherParticipants.length} other participants in this course
-                  </DialogDescription>
+                  <DialogDescription>{otherParticipants.length} other participants in this course</DialogDescription>
                   <div className="space-y-3 mt-2 max-h-80 overflow-y-auto pr-1">
                     {otherParticipants.map((student) => (
                       <div key={student.id} className="flex items-center gap-3">
@@ -88,7 +103,9 @@ export default function MyCourse() {
                           imageURL={student.imageUrl}
                         />
                         <div>
-                          <p>{student.firstName} {student.lastName}</p>
+                          <p>
+                            {student.firstName} {student.lastName}
+                          </p>
                           <p className="text-sm text-muted-foreground">Student</p>
                         </div>
                       </div>

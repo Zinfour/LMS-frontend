@@ -49,8 +49,8 @@ export const NAV_LINKS = {
       icon: <MdOutlineLibraryBooks className="size-6" />,
     },
     {
-      label: 'Students',
-      link: '/students',
+      label: 'Users',
+      link: '/users',
       icon: <MdOutlineGroups2 className="size-6" />,
     },
     {

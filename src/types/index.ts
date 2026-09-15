@@ -10,7 +10,7 @@ export interface DatabaseUser {
   email: string;
   firstName: string;
   lastName: string;
-  role: UserRole;
+  role: 'Teacher' | 'Student';
   imageUrl: string;
   courseId: number;
 }

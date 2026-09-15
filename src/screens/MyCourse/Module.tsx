@@ -10,6 +10,8 @@ import { Progress } from '@/components/ui/progress';
 import { buttonVariants } from '@/components/ui/button';
 import CustomLink from '@/components/CustomLink';
 import { cn } from '@/lib/utils';
+import Loading from '@/components/Loading';
+import Error from '@/components/Error';
 
 export default function CourseModule() {
   const user = usePersistentStore((state) => state.user!);
@@ -21,11 +23,19 @@ export default function CourseModule() {
   } = useGetModuleById({ moduleId: Number(moduleId), courseId: user.courseId, userId: user?.id });
 
   if (isLoading) {
-    return <div>Loading...</div>;
+    return (
+      <div className="py-8">
+        <Loading />
+      </div>
+    );
   }
 
   if (error || !module) {
-    return <div>Error, something went wrong.</div>;
+    return (
+      <div className="py-8">
+        <Error />
+      </div>
+    );
   }
 
   return (
