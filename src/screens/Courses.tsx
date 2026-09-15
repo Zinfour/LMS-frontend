@@ -29,9 +29,7 @@ function CourseCard({ course }: { course: Course }) {
           <p className="text-sm text-muted-foreground">{formatPeriod(course.startDate, course.endDate)}</p>
         </div>
 
-        {course.description && (
-          <p className="line-clamp-3 text-sm text-muted-foreground">{course.description}</p>
-        )}
+        {course.description && <p className="line-clamp-3 text-sm text-muted-foreground">{course.description}</p>}
 
         <div className="flex items-center gap-2 text-sm text-muted-foreground">
           {teacherName ? (
@@ -57,16 +55,7 @@ export default function Courses() {
   const { data: courses, isLoading, isError, refetch } = useGetCourses();
 
   return (
-    <div className="space-y-6 p-4 sm:p-6 lg:p-8">
-      <header className="space-y-1">
-        <h1 className="text-2xl font-semibold">Courses</h1>
-        {courses && courses.length > 0 && (
-          <p className="text-sm text-muted-foreground">
-            {courses.length} {courses.length === 1 ? 'course' : 'courses'}
-          </p>
-        )}
-      </header>
-
+    <div className="space-y-6 p-1 sm:p-2 lg:p-4">
       {isLoading ? (
         <div className="grid gap-4 sm:grid-cols-2">
           {Array.from({ length: 3 }).map((_, i) => (

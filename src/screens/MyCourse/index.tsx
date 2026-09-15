@@ -1,28 +1,12 @@
-import ModuleCard from '@/components/ModuleCard';
 import Error from '@/components/Error';
-import CustomLink from '../../components/CustomLink';
-import { Button, buttonVariants } from '@/components/ui/button';
-import { Card, CardContent } from '@/components/ui/card';
-import { Progress } from '@/components/ui/progress';
-import { Separator } from '@/components/ui/separator';
-import UserImage from '@/components/UserImage';
-import useGetMyCourse from '@/hooks/useGetMyCourse';
+import useGetCourseById from '@/hooks/useGetCourseById';
 import { usePersistentStore } from '@/hooks/usePersistentStore';
-import dayjs from 'dayjs';
-import CustomBadge from '@/components/CustomBadge';
 import Loading from '@/components/Loading';
-import {
-  Dialog,
-  DialogTrigger,
-  DialogContent,
-  DialogTitle,
-  DialogHeader,
-  DialogDescription,
-} from '@/components/ui/dialog';
+import CourseScreenContent from '@/components/CourseScreenContent';
 
 export default function MyCourse() {
   const user = usePersistentStore((state) => state.user!);
-  const { data: myCourse, isLoading, error } = useGetMyCourse({ courseid: user.courseId, userId: user?.id });
+  const { data: myCourse, isLoading, error } = useGetCourseById({ courseid: user.courseId, userId: user?.id });
 
   if (isLoading) {
     return (
@@ -40,120 +24,5 @@ export default function MyCourse() {
     );
   }
 
-  const otherParticipants = myCourse.students.filter((student) => student.id !== user.id);
-
-  return (
-    <div>
-      <Card className="lg:px-2 lg:py-6 bg-card-foreground">
-        <CardContent className="flex flex-col sm:flex-row gap-4 lg:gap-10 text-card">
-          <div>
-            <div className="flex gap-2 items-center text-xs text-card/60 mb-5">
-              {/* <p>{COURSE.courseTag}</p>
-              <div className="w-0.5 h-0.5 rounded-full bg-card/60"></div> */}
-              <p>
-                {dayjs(myCourse?.startDate).format('DD MMM')} - {dayjs(myCourse.endDate).format('DD MMM YYYY')}
-              </p>
-              <CustomBadge
-                className="text-xs font-medium ml-2"
-                status={
-                  myCourse.status === 'in-progress'
-                    ? 'default'
-                    : myCourse.status === 'completed'
-                      ? 'success'
-                      : 'noStatus'
-                }>
-                {myCourse.status === 'in-progress'
-                  ? 'In progress'
-                  : myCourse.status === 'completed'
-                    ? 'Completed'
-                    : 'Not started'}
-              </CustomBadge>
-            </div>
-            <h1 className="text-xl lg:text-3xl font-bold mb-3">{myCourse.name}</h1>
-            <h2 className="leading-relaxed text-card/60 text-sm">{myCourse.description}</h2>
-            <div className="flex items-center gap-3 mt-8">
-              <UserImage
-                size="small"
-                username={`${myCourse.teacher.firstName} ${myCourse.teacher.lastName}`}
-                imageURL={myCourse.teacher.imageUrl}
-              />
-              <div className="flex flex-col justify-center">
-                <p className="text-base font-medium text-card/60">
-                  {myCourse.teacher.firstName} {myCourse.teacher.lastName}
-                </p>
-                <p className="text-sm text-card/60">Teacher</p>
-              </div>
-              <div className="h-10 w-px bg-card/20 mx-1" />
-              <Dialog>
-                <DialogTrigger className={buttonVariants({ variant: 'default' })}>
-                  View participants ({otherParticipants.length})
-                </DialogTrigger>
-
-                <DialogContent>
-                  <DialogHeader>
-                    <DialogTitle>Course participants</DialogTitle>
-                  </DialogHeader>
-                  <DialogDescription>{otherParticipants.length} other participants in this course</DialogDescription>
-                  <div className="space-y-3 mt-2 max-h-80 overflow-y-auto pr-1">
-                    {otherParticipants.map((student) => (
-                      <div key={student.id} className="flex items-center gap-3">
-                        <UserImage
-                          size="small"
-                          username={`${student.firstName} ${student.lastName}`}
-                          imageURL={student.imageUrl}
-                        />
-                        <div>
-                          <p>
-                            {student.firstName} {student.lastName}
-                          </p>
-                          <p className="text-sm text-muted-foreground">Student</p>
-                        </div>
-                      </div>
-                    ))}
-                  </div>
-                </DialogContent>
-              </Dialog>
-            </div>
-          </div>
-          <Separator className="my-2 h-px sm:hidden" />
-          <div className="w-full sm:w-[30%] max-w-100 mx-auto min-w-45 lg:min-w-55">
-            <div className="flex justify-between items-center">
-              <p className="text-card/60 font-light">Your progress</p>
-              <p>{myCourse.userProgress.progressPercentage}%</p>
-            </div>
-            <Progress className="scale-y-250 mt-4 mb-3" value={myCourse.userProgress.progressPercentage} />
-            <p className="text-card/60 font-light text-xs">
-              {myCourse.userProgress.numberOfCompletedActivities} of {myCourse.userProgress.totalActivities} activities
-              completed
-            </p>
-            <div className="mt-4 space-y-2">
-              <CustomLink
-                className={buttonVariants({ variant: 'default', className: 'w-full text-center py-5' })}
-                to={`${myCourse.currentModuleId}`}
-                disabled={!myCourse.currentModuleId}>
-                Continue: Module {myCourse.currentModuleId ?? ''}
-              </CustomLink>
-              <Button variant="secondary" className="w-full py-5">
-                Course syllabus (PDF)
-              </Button>
-            </div>
-          </div>
-        </CardContent>
-      </Card>
-      <section className="mt-10 max-w-7xl">
-        <h1 className="text-xl font-bold mb-4">Modules</h1>
-        <div className="grid-cols-1 lg:grid-cols-2 grid gap-3">
-          {myCourse.modules.map((module) => (
-            <CustomLink
-              className="flex hover:-translate-y-0.5 transition-transform duration-150"
-              key={module.id}
-              to={`${module.id}`}
-              disabled={module.currentStatus === 'locked'}>
-              <ModuleCard module={module} />
-            </CustomLink>
-          ))}
-        </div>
-      </section>
-    </div>
-  );
+  return <CourseScreenContent course={myCourse} />;
 }
