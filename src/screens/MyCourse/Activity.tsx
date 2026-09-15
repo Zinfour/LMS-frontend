@@ -8,7 +8,7 @@ import SubmissionCard from '@/components/SubmissionCard';
 import useGetSubmissionsForUser from '@/hooks/useGetSubmissionsForUser';
 import type { ActivityResource } from '@/hooks/useGetModuleById';
 import type { ResourceType } from '@/types';
-import CreateResourceDialog from '@/components/CreateResourceDialog';
+import ResourceDialog from '@/components/ResourceDialog';
 
 function getLatestResourcesByType(resources: ActivityResource[], type: ResourceType) {
   return resources
@@ -84,44 +84,48 @@ export default function Activity() {
               </CardContent>
             </Card>
             {/* TextMaterial */}
-            {textMaterials.map((textMaterial, index) => (
-              <Card key={index}>
-                <CardContent className="space-y-2">
+            {textMaterials.map((textMaterial) => (
+              <Card key={textMaterial.id} className="relative">
+                <CardContent className={isTeacher ? 'space-y-2 pb-4' : 'space-y-2'}>
                   {textMaterial.description.split(/\r?\n/).map((line, index) => (
                     <p key={index} className="text-foreground">
                       {line}
                     </p>
                   ))}
                 </CardContent>
+
+                {isTeacher && (
+                  <ResourceDialog activityId={activity.id} resourceType="TextMaterial" resource={textMaterial} />
+                )}
               </Card>
             ))}
 
             {isTeacher && (
-              <CreateResourceDialog activityId={activity.id} resourceType="TextMaterial" buttonText="+ Add text" />
+              <ResourceDialog activityId={activity.id} resourceType="TextMaterial" buttonText="+ Add text" />
             )}
 
             {/* Instructions */}
             {instructions.map((instruction) => (
-              <Card key={instruction.id}>
+              <Card key={instruction.id} className="relative">
                 <CardHeader>
                   <h2 className="text-2xl font-bold">Instructions</h2>
                 </CardHeader>
-                <CardContent className="space-y-2">
+                <CardContent className={isTeacher ? 'space-y-2 pb-4' : 'space-y-2'}>
                   {instruction.description.split(/\r?\n/).map((line, index) => (
                     <p key={index} className="text-foreground">
                       {line}
                     </p>
                   ))}
                 </CardContent>
+
+                {isTeacher && (
+                  <ResourceDialog activityId={activity.id} resourceType="Instruction" resource={instruction} />
+                )}
               </Card>
             ))}
 
             {isTeacher && activity.assignment && (
-              <CreateResourceDialog
-                activityId={activity.id}
-                resourceType="Instruction"
-                buttonText="+ Add instructions"
-              />
+              <ResourceDialog activityId={activity.id} resourceType="Instruction" buttonText="+ Add instructions" />
             )}
 
             {/* Resources (links only) */}
@@ -139,6 +143,11 @@ export default function Activity() {
                             url: item.url,
                             description: item.description,
                           }}
+                          editDialog={
+                            isTeacher ? (
+                              <ResourceDialog activityId={activity.id} resourceType="Link" resource={item} />
+                            ) : undefined
+                          }
                         />
                       ),
                   )}
@@ -146,7 +155,7 @@ export default function Activity() {
               </Card>
             )}
 
-            {isTeacher && <CreateResourceDialog activityId={activity.id} resourceType="Link" buttonText="+ Add link" />}
+            {isTeacher && <ResourceDialog activityId={activity.id} resourceType="Link" buttonText="+ Add link" />}
           </div>
 
           {/* Right column */}

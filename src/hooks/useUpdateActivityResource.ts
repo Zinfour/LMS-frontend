@@ -1,24 +1,29 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { api } from '@/api';
-import type { ActivityResource } from './useGetModuleById';
+import type { ActivityResource } from '@/hooks/useGetModuleById';
 import type { ResourceType } from '@/types';
 
-interface CreateActivityResourceRequest {
+interface UpdateActivityResourceRequest {
   activityId: number;
-  resourceType: ResourceType;
+  resource: ActivityResource;
   name: string;
   description: string;
   url?: string;
 }
 
-const useCreateActivityResource = () => {
+const useUpdateActivityResource = () => {
   const queryClient = useQueryClient();
 
   return useMutation({
-    mutationFn: async ({ activityId, resourceType, name, description, url }: CreateActivityResourceRequest) => {
-      const response = await api.post<ActivityResource>(`/activities/${activityId}/resources`, {
+    mutationFn: async ({
+      resource,
+      name,
+      description,
+      url,
+    }: UpdateActivityResourceRequest) => {
+      const response = await api.put<ActivityResource>(`/activities/resources/${resource.id}`, {
         URL: url ?? null,
-        ResourceType: resourceType,
+        ResourceType: resource.resourceType as ResourceType,
         Name: name,
         Description: description,
       });
@@ -33,9 +38,9 @@ const useCreateActivityResource = () => {
     },
 
     onError: (error) => {
-      console.log('Error creating activity resource.', error);
+      console.log('Error updating activity resource.', error);
     },
   });
 };
 
-export default useCreateActivityResource;
+export default useUpdateActivityResource;
