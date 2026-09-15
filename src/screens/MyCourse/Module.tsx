@@ -39,9 +39,11 @@ export default function CourseModule() {
     );
   }
 
+  const isTeacher = user.role === 'teacher';
+
   return (
     <div className="py-6 px-2 flex gap-6 xl:gap-10 flex-col xl:flex-row">
-      <div className="flex-1">
+      <div className="flex-1 space-y-4">
         <section>
           <div className="flex items-center gap-2 text-muted-foreground text-xs font-light">
             <p>
@@ -56,7 +58,7 @@ export default function CourseModule() {
           <h1 className="text-4xl font-bold mt-2 mb-4">{module.name}</h1>
           <p className="text-muted-foreground text-sm font-light leading-relaxed">{module.description}</p>
         </section>
-        <section className="mt-8">
+        <section className="mt-4">
           <div className="flex items-center justify-between">
             <h2 className="text-xl font-semibold mb-4">Activities</h2>
             <p className="text-muted-foreground text-xs font-light">
@@ -66,14 +68,22 @@ export default function CourseModule() {
           <Card className="gap-0 py-0">
             {module.activities.map((activity, index) => (
               <React.Fragment key={activity.id}>
-                <Link className="hover:scale-101 hover:translate-x-1 transition-transform" to={`${activity.id}`}>
-                  <ActivityCard activity={activity} idOfCurrentActivity={module.idOfCurrentActivity} />
-                </Link>
+                <div className="relative hover:scale-101 hover:translate-x-1 transition-transform">
+                  <Link to={`${activity.id}`}>
+                    <ActivityCard activity={activity} idOfCurrentActivity={module.idOfCurrentActivity} />
+                  </Link>
+                  {isTeacher && (
+                    <div className="absolute right-2 bottom-1">
+                      <ActivityDialog moduleId={module.id} activity={activity} />
+                    </div>
+                  )}
+                </div>
                 {index < module.activities.length - 1 && <Separator className="h-px" />}
               </React.Fragment>
             ))}
           </Card>
         </section>
+        <ActivityDialog moduleId={module.id} />
       </div>
       <div className="xl:w-[30%] xl:max-w-85 flex xl:flex-col gap-4">
         <Card className="hidden sm:flex flex-2 xl:flex-none">
