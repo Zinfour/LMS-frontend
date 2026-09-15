@@ -84,21 +84,24 @@ export default function Activity() {
                 )}
               </CardContent>
             </Card>
+
             {/* TextMaterial */}
             {textMaterials.map((textMaterial) => (
-              <Card key={textMaterial.id} className="relative">
-                <CardContent className={isTeacher ? 'space-y-2 pb-4' : 'space-y-2'}>
-                  {textMaterial.description.split(/\r?\n/).map((line, index) => (
-                    <p key={index} className="text-foreground">
-                      {line}
-                    </p>
-                  ))}
-                </CardContent>
+              <div key={textMaterial.id} className="relative">
+                <Card>
+                  <CardContent className={isTeacher ? 'space-y-2 pb-4' : 'space-y-2'}>
+                    {textMaterial.description.split(/\r?\n/).map((line, index) => (
+                      <p key={index} className="text-foreground">
+                        {line}
+                      </p>
+                    ))}
+                  </CardContent>
+                </Card>
 
                 {isTeacher && (
                   <ResourceDialog activityId={activity.id} resourceType="TextMaterial" resource={textMaterial} />
                 )}
-              </Card>
+              </div>
             ))}
 
             {isTeacher && (
@@ -107,22 +110,24 @@ export default function Activity() {
 
             {/* Instructions */}
             {instructions.map((instruction) => (
-              <Card key={instruction.id} className="relative">
-                <CardHeader>
-                  <h2 className="text-2xl font-bold">Instructions</h2>
-                </CardHeader>
-                <CardContent className={isTeacher ? 'space-y-2 pb-4' : 'space-y-2'}>
-                  {instruction.description.split(/\r?\n/).map((line, index) => (
-                    <p key={index} className="text-foreground">
-                      {line}
-                    </p>
-                  ))}
-                </CardContent>
+              <div key={instruction.id} className="relative">
+                <Card>
+                  <CardHeader>
+                    <h2 className="text-2xl font-bold">Instructions</h2>
+                  </CardHeader>
+                  <CardContent className={isTeacher ? 'space-y-2 pb-4' : 'space-y-2'}>
+                    {instruction.description.split(/\r?\n/).map((line, index) => (
+                      <p key={index} className="text-foreground">
+                        {line}
+                      </p>
+                    ))}
+                  </CardContent>
+                </Card>
 
                 {isTeacher && (
                   <ResourceDialog activityId={activity.id} resourceType="Instruction" resource={instruction} />
                 )}
-              </Card>
+              </div>
             ))}
 
             {isTeacher && activity.assignment && (
