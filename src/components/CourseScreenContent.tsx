@@ -60,9 +60,32 @@ export default function CourseScreenContent({ course }: Props) {
                 </p>
                 <p className="text-sm text-card/60">Teacher</p>
               </div>
-              <div className="h-10 w-px bg-card/20 mx-1" />
+            </div>
+          </div>
+          <Separator className="my-2 h-px sm:hidden" />
+          <div className="w-full sm:w-[30%] max-w-100 mx-auto min-w-45 lg:min-w-55">
+            {isStudent && (
+              <>
+                <div className="flex justify-between items-center">
+                  <p className="text-card/60 font-light">Your progress</p>
+                  <p>{course.userProgress.progressPercentage}%</p>
+                </div>
+                <Progress className="scale-y-250 mt-4 mb-3" value={course.userProgress.progressPercentage} />
+                <p className="text-card/60 font-light text-xs">
+                  {course.userProgress.numberOfCompletedActivities} of {course.userProgress.totalActivities} activities
+                  completed
+                </p>
+              </>
+            )}
+            <div className="mt-4 space-y-2">
+              <CustomLink
+                className={buttonVariants({ variant: 'default', className: 'w-full text-center py-5' })}
+                to={`${course.currentModuleId}`}
+                disabled={!course.currentModuleId}>
+                Continue: Module {course.currentModuleId ?? ''}
+              </CustomLink>
               <Dialog>
-                <DialogTrigger className={buttonVariants({ variant: 'default' })}>
+                <DialogTrigger render={<Button variant="secondary" className="w-full py-5" />}>
                   View participants ({course.students.length})
                 </DialogTrigger>
 
@@ -90,33 +113,6 @@ export default function CourseScreenContent({ course }: Props) {
                   </div>
                 </DialogContent>
               </Dialog>
-            </div>
-          </div>
-          <Separator className="my-2 h-px sm:hidden" />
-          <div className="w-full sm:w-[30%] max-w-100 mx-auto min-w-45 lg:min-w-55">
-            {isStudent && (
-              <>
-                <div className="flex justify-between items-center">
-                  <p className="text-card/60 font-light">Your progress</p>
-                  <p>{course.userProgress.progressPercentage}%</p>
-                </div>
-                <Progress className="scale-y-250 mt-4 mb-3" value={course.userProgress.progressPercentage} />
-                <p className="text-card/60 font-light text-xs">
-                  {course.userProgress.numberOfCompletedActivities} of {course.userProgress.totalActivities} activities
-                  completed
-                </p>
-              </>
-            )}
-            <div className="mt-4 space-y-2">
-              <CustomLink
-                className={buttonVariants({ variant: 'default', className: 'w-full text-center py-5' })}
-                to={`${course.currentModuleId}`}
-                disabled={!course.currentModuleId}>
-                Continue: Module {course.currentModuleId ?? ''}
-              </CustomLink>
-              <Button variant="secondary" className="w-full py-5">
-                Course syllabus (PDF)
-              </Button>
             </div>
           </div>
         </CardContent>
