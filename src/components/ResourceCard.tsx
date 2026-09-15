@@ -21,12 +21,22 @@ function getResourceMeta(mime: string) {
   return { icon: File, color: HUES.neutral };
 }
 
+function guessMime(url: string) {
+
+  if (url.endsWith(".zip")) {
+    return 'application/zip';
+  } else if (url.endsWith(".pdf")) {
+    return 'application/pdf';
+  }
+  return "text/html";
+};
+
 export default function ResourceCard({
   resource,
 }: {
   resource: { name: string; url: string; mime?: string; description: string };
 }) {
-  const { icon: Icon, color } = resource.mime ? getResourceMeta(resource.mime) : { icon: LinkIcon, color: HUES.indigo };
+  const { icon: Icon, color } = getResourceMeta(resource.mime ?? guessMime(resource.url));
 
   return (
     <a href={resource.url} target="_blank" rel="noreferrer">
