@@ -138,7 +138,7 @@ export default function Login() {
                       placeholder="********"
                       autoCapitalize="off"
                       autoComplete="off"
-                      className="py-5"
+                      className="py-5 dark:scheme-dark"
                     />
                     {fieldState.invalid && <FieldError errors={[fieldState.error]} />}
                   </Field>
