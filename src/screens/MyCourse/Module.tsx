@@ -9,9 +9,10 @@ import ActivityCard from '@/components/ActivityCard';
 import { Progress } from '@/components/ui/progress';
 import { buttonVariants } from '@/components/ui/button';
 import CustomLink from '@/components/CustomLink';
-import { cn } from '@/lib/utils';
 import Loading from '@/components/Loading';
 import Error from '@/components/Error';
+import ResourceCard from '@/components/ResourceCard';
+import ActivityDialog from '@/components/ActivityDialog';
 
 export default function CourseModule() {
   const user = usePersistentStore((state) => state.user!);
@@ -100,30 +101,28 @@ export default function CourseModule() {
             <p className="text-muted-foreground text-xs font-light">RESOURCES</p>
           </CardHeader>
           <CardContent>
-            <ul>
-              {module.resources.map((resource) => (
-                <li className="mb-4 last:mb-0" key={resource.id}>
-                  <a
-                    href={resource.url}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className={cn(
-                      'flex items-center gap-4 hover:-translate-y-0.5 transition-transform duration-150',
-                      !resource.url && 'pointer-events-none opacity-50',
-                    )}>
-                    <div className="w-11 h-11 flex min-w-11 items-center justify-center bg-accent rounded-lg border-accent-foreground/20 border">
-                      <p className="text-accent-foreground text-xs font-semibold">
-                        {resource.resourceType.slice(0, 3)}
-                      </p>
-                    </div>
-                    <div>
-                      <h4 className="font-medium text-sm mb-0.5 line-clamp-1">{resource.name}</h4>
-                      <p className="text-muted-foreground text-xs line-clamp-2">{resource.description}</p>
-                    </div>
-                  </a>
-                </li>
-              ))}
-            </ul>
+            <div className="grid grid-cols-[repeat(auto-fit,minmax(15rem,1fr))] gap-4">
+              {module.resources
+                .filter(
+                  (resource) =>
+                    resource.resourceType === 'Link' ||
+                    resource.resourceType === 'Reference' ||
+                    resource.resourceType === 'Summary',
+                )
+                .map(
+                  (resource) =>
+                    resource.url && (
+                      <ResourceCard
+                        key={resource.id}
+                        resource={{
+                          name: resource.name,
+                          url: resource.url,
+                          description: resource.description,
+                        }}
+                      />
+                    ),
+                )}
+            </div>
           </CardContent>
         </Card>
       </div>
