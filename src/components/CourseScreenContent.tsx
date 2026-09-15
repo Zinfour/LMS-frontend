@@ -125,7 +125,7 @@ export default function CourseScreenContent({ course }: Props) {
               className="flex hover:-translate-y-0.5 transition-transform duration-150"
               key={module.id}
               to={`${module.id}`}
-              disabled={module.currentStatus === 'locked'}>
+              disabled={isStudent && module.currentStatus === 'locked'}>
               <ModuleCard module={module} />
             </CustomLink>
           ))}

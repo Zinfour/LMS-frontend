@@ -15,12 +15,12 @@ import Error from '@/components/Error';
 
 export default function CourseModule() {
   const user = usePersistentStore((state) => state.user!);
-  const { moduleId } = useParams();
+  const { courseId, moduleId } = useParams();
   const {
     data: module,
     isLoading,
     error,
-  } = useGetModuleById({ moduleId: Number(moduleId), courseId: user.courseId, userId: user?.id });
+  } = useGetModuleById({ moduleId: Number(moduleId), courseId: Number(courseId ?? user.courseId), userId: user?.id });
 
   if (isLoading) {
     return (

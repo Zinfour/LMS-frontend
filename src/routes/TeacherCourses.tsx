@@ -26,8 +26,8 @@ const CourseCrumb = () => {
 
 const ModuleCrumb = () => {
   const user = usePersistentStore((state) => state.user!);
-  const { moduleId } = useParams();
-  const { data: module } = useGetModuleById({ moduleId: Number(moduleId), courseId: user.courseId, userId: user?.id });
+  const { courseId, moduleId } = useParams();
+  const { data: module } = useGetModuleById({ moduleId: Number(moduleId), courseId: Number(courseId), userId: user?.id });
 
   return module?.name ?? 'Module';
 };
