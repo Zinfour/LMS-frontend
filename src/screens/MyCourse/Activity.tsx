@@ -14,7 +14,7 @@ import TeacherSubmissions from '@/components/TeacherSubmissions';
 function getLatestResourcesByType(resources: ActivityResource[], type: ResourceType) {
   return resources
     .filter((resource) => resource.resourceType === type)
-    .sort((a, b) => dayjs(b.updatedAt).valueOf() - dayjs(a.updatedAt).valueOf());
+    .sort((a, b) => dayjs(a.createdAt).valueOf() - dayjs(b.createdAt).valueOf());
 }
 
 export default function Activity() {
