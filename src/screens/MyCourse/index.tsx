@@ -8,6 +8,14 @@ export default function MyCourse() {
   const user = usePersistentStore((state) => state.user!);
   const { data: myCourse, isLoading, error } = useGetCourseById({ courseid: user.courseId, userId: user?.id });
 
+  if (!user.courseId) {
+    return (
+      <div className="py-8">
+        <h1 className="text-2xl font-bold">You are not enrolled in any course yet.</h1>
+      </div>
+    );
+  }
+
   if (isLoading) {
     return (
       <div className="py-8">

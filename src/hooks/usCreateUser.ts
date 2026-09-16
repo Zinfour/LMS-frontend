@@ -8,7 +8,7 @@ type CreateUserData = {
   email: string;
   password: string;
   role: 'Student' | 'Teacher';
-  courseId: number;
+  courseId?: number;
   imageUrl?: string;
 };
 

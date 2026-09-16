@@ -53,11 +53,7 @@ const schema = z.object({
   password: z.string().min(6, { message: 'Password must be at least 6 characters.' }),
   role: z.enum(['Student', 'Teacher'], { message: 'Role must be either student or teacher.' }),
   imageUrl: z.string().optional(),
-  courseId: z
-    .number()
-    .int()
-    .positive({ message: 'Select a valid course.' })
-    .min(1, { message: 'Select a valid course.' }),
+  courseId: z.number().optional(),
 });
 
 const Form = ({ type, user, setDialogOpen }: Props & { setDialogOpen: (open: boolean) => void }) => {
@@ -87,11 +83,18 @@ const Form = ({ type, user, setDialogOpen }: Props & { setDialogOpen: (open: boo
   });
 
   const handleFormSubmit = (data: z.infer<typeof schema>) => {
+    console.log('Editing user with data:', data);
+
     if (type === 'create') {
-      createUser(data);
+      createUser({
+        ...data,
+        courseId: data.courseId === 0 ? undefined : data.courseId,
+      });
     } else {
-      console.log('Editing user with data:', data);
-      editUser(data);
+      editUser({
+        ...data,
+        courseId: data.courseId === 0 ? undefined : data.courseId,
+      });
     }
   };
 
@@ -99,6 +102,8 @@ const Form = ({ type, user, setDialogOpen }: Props & { setDialogOpen: (open: boo
 
   const isFormPending = isPending || isEditPending;
   const formId = type === 'create' ? 'create-user-form' : `edit-user-form-${user?.id}`;
+  console.log(form.getValues(), 'form values');
+  console.log(form.formState.errors, 'form errors');
   return (
     <form id={formId} onSubmit={form.handleSubmit(handleFormSubmit)}>
       <DialogContent className="sm:max-w-sm xl:max-w-xl w-lg max-h-screen overflow-y-auto">
@@ -233,9 +238,9 @@ const Form = ({ type, user, setDialogOpen }: Props & { setDialogOpen: (open: boo
               control={form.control}
               render={({ field }) => (
                 <Field>
-                  <FieldLabel htmlFor="courseId">Course *</FieldLabel>
+                  <FieldLabel htmlFor="courseId">Course</FieldLabel>
                   <Select
-                    items={[{ label: 'Select a course', value: 0 }, ...coursesOptions]}
+                    items={[{ label: 'N/A', value: 0 }, ...coursesOptions]}
                     value={field.value}
                     onValueChange={(value) => field.onChange(value)}
                     disabled={isFormPending}>
@@ -245,7 +250,7 @@ const Form = ({ type, user, setDialogOpen }: Props & { setDialogOpen: (open: boo
                     <SelectContent>
                       <SelectGroup>
                         <SelectLabel>Courses</SelectLabel>
-                        {coursesOptions.map((item) => (
+                        {[{ label: 'N/A', value: 0 }, ...coursesOptions].map((item) => (
                           <SelectItem key={item.value} value={item.value}>
                             {item.label}
                           </SelectItem>
@@ -304,7 +309,7 @@ export default function CreateNewUserModal({ user, type = 'create' }: Props) {
         render={
           <Button
             variant={type === 'create' ? 'default' : 'outline'}
-            className={cn('h-10 px-8', type === 'create' && 'absolute right-12')}>
+            className={cn('h-10 px-8', type === 'create' && 'absolute right-0')}>
             {type === 'create' ? 'Create New' : 'Edit'}
           </Button>
         }

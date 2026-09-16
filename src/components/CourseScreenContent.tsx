@@ -57,9 +57,8 @@ export default function CourseScreenContent({ course }: Props) {
               />
               <div className="flex flex-col justify-center">
                 <p className="text-base font-medium text-card/60">
-                  {course.teacher.firstName} {course.teacher.lastName}
+                  {course.teacher.firstName} {course.teacher.lastName} - <span className="italic">Teacher</span>
                 </p>
-                <p className="text-sm text-card/60">Teacher</p>
               </div>
             </div>
           </div>
