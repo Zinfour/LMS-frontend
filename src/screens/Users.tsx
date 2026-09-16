@@ -54,7 +54,7 @@ export default function Users() {
 
   return (
     <div className="px-8 py-10 max-w-7xl ">
-      <div className="flex items-center justify-between mb-6">
+      <div className="flex items-center justify-between mb-6 relative">
         <h1 className="text-3xl font-bold">Users</h1>
         <CreateNewUserModal />
       </div>
