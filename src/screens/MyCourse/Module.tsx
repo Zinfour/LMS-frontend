@@ -84,7 +84,7 @@ export default function CourseModule() {
             ))}
           </Card>
         </section>
-        <ActivityDialog moduleId={module.id} />
+        {isTeacher && (<ActivityDialog moduleId={module.id} />)}
       </div>
       <div className="xl:w-[30%] xl:max-w-85 flex xl:flex-col gap-4">
         <Card className="hidden sm:flex flex-2 xl:flex-none">
