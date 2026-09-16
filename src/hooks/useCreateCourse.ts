@@ -21,6 +21,7 @@ const useCreateCourse = (successCallback: () => void) => {
     onSuccess: () => {
       toast.success('Course created successfully!');
       queryClient.invalidateQueries({ queryKey: ['courses'] });
+      queryClient.invalidateQueries({ queryKey: ['users'] });
       successCallback();
     },
     onError: (error) => {
