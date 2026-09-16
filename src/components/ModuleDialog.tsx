@@ -15,6 +15,17 @@ import {
   DialogTrigger,
 } from '@/components/ui/dialog';
 import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+  AlertDialogTrigger,
+} from '@/components/ui/alert-dialog';
+import {
   FieldError,
   FieldGroup,
   FieldLabel,
@@ -25,6 +36,7 @@ import { Textarea } from '@/components/ui/textarea';
 import useGetModuleById from '@/hooks/useGetModuleById';
 import useCreateModule from '@/hooks/useCreateModule';
 import useUpdateModule from '@/hooks/useUpdateModule';
+import useDeleteModule from '@/hooks/useDeleteModule';
 
 interface Props {
   courseId: number;
@@ -44,9 +56,12 @@ type FormValues = z.infer<typeof formSchema>;
 
 const ModuleDialog = ({ courseId, userId, moduleId }: Props) => {
   const [open, setOpen] = useState(false);
+  const [deleteOpen, setDeleteOpen] = useState(false);
+  const [confirmation, setConfirmation] = useState('');
   const isEditing = moduleId !== undefined;
   const createModule = useCreateModule();
   const updateModule = useUpdateModule();
+  const deleteModule = useDeleteModule();
   const { data: module } = useGetModuleById({
     moduleId,
     courseId,
@@ -84,6 +99,31 @@ const ModuleDialog = ({ courseId, userId, moduleId }: Props) => {
       createModule.reset();
       updateModule.reset();
     }
+  };
+
+  const handleDeleteOpenChange = (newOpen: boolean) => {
+    setDeleteOpen(newOpen);
+
+    if (!newOpen) {
+      setConfirmation('');
+      deleteModule.reset();
+    }
+  };
+
+  const handleDelete = () => {
+    if (moduleId === undefined || confirmation !== 'DELETE' || deleteModule.isPending) {
+      return;
+    }
+
+    deleteModule.mutate(
+      { courseId, moduleId, userId },
+      {
+        onSuccess: () => {
+          handleDeleteOpenChange(false);
+          setOpen(false);
+        },
+      },
+    );
   };
 
   const handleFormSubmit = (values: FormValues) => {
@@ -178,14 +218,60 @@ const ModuleDialog = ({ courseId, userId, moduleId }: Props) => {
             </p>
           )}
 
-          <DialogFooter className="mt-6">
-            <DialogClose>
+          <DialogFooter className={isEditing ? 'mt-6 sm:grid sm:grid-cols-3 sm:items-center' : 'mt-6'}>
+            {isEditing && (
+              <AlertDialog open={deleteOpen} onOpenChange={handleDeleteOpenChange}>
+                <AlertDialogTrigger
+                  render={
+                    <Button type="button" variant="destructive" disabled={!module} className="sm:justify-self-start">
+                      Delete module
+                    </Button>
+                  }
+                />
+                <AlertDialogContent
+                  className="bg-card-foreground text-card shadow-xl"
+                  overlayClassName="bg-black/50 supports-backdrop-filter:backdrop-blur-sm">
+                  <AlertDialogHeader>
+                    <AlertDialogTitle>Delete module?</AlertDialogTitle>
+                    <AlertDialogDescription className="text-card/70">
+                      This will permanently delete "{module?.name}". This action cannot be undone.
+                    </AlertDialogDescription>
+                  </AlertDialogHeader>
+
+                  <div>
+                    <FieldLabel htmlFor="delete-confirmation">Type DELETE to confirm.</FieldLabel>
+                    <Input
+                      id="delete-confirmation"
+                      value={confirmation}
+                      onChange={(event) => setConfirmation(event.target.value)}
+                    />
+                  </div>
+
+                  {deleteModule.isError && (
+                    <p className="text-sm text-destructive">Failed to delete module.</p>
+                  )}
+
+                  <AlertDialogFooter className="bg-card-foreground">
+                    <AlertDialogCancel type="button">Cancel</AlertDialogCancel>
+                    <AlertDialogAction
+                      type="button"
+                      variant="destructive"
+                      disabled={confirmation !== 'DELETE' || deleteModule.isPending}
+                      onClick={handleDelete}>
+                      {deleteModule.isPending ? 'Deleting...' : 'Delete module'}
+                    </AlertDialogAction>
+                  </AlertDialogFooter>
+                </AlertDialogContent>
+              </AlertDialog>
+            )}
+
+            <DialogClose className={isEditing ? 'sm:justify-self-center' : undefined}>
               <Button type="button" variant="outline">
                 Cancel
               </Button>
             </DialogClose>
 
-            <Button type="submit" disabled={isPending}>
+            <Button type="submit" disabled={isPending} className={isEditing ? 'sm:justify-self-end' : undefined}>
               {isPending
                 ? isEditing
                   ? 'Saving...'
