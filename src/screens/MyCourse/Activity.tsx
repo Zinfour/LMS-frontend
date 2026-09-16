@@ -89,6 +89,9 @@ export default function Activity() {
             {textMaterials.map((textMaterial) => (
               <div key={textMaterial.id} className="relative">
                 <Card>
+                  <CardHeader>
+                    <h2 className="text-2xl font-bold">{textMaterial.name}</h2>
+                  </CardHeader>
                   <CardContent className={isTeacher ? 'space-y-2 pb-4' : 'space-y-2'}>
                     {textMaterial.description.split(/\r?\n/).map((line, index) => (
                       <p key={index} className="text-foreground">
