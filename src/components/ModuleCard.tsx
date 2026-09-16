@@ -9,6 +9,9 @@ import { usePersistentStore } from '@/hooks/usePersistentStore';
 export default function ModuleCard({ module }: { module: Module }) {
   const user = usePersistentStore((state) => state.user!);
   const isStudent = user.role === 'student';
+  const startDate = dayjs(module.startDate);
+  const endDate = dayjs(module.endDate);
+  const dateFormat = startDate.year() === endDate.year() ? 'DD MMM' : 'DD MMM YYYY';
   const isCompleted = module.currentStatus === 'completed';
   const isOverdue = module.currentStatus === 'overdue';
   // const isInProgress = module.currentStatus === 'in-progress';
@@ -34,7 +37,7 @@ export default function ModuleCard({ module }: { module: Module }) {
           <p>MODULE {module.id}</p>
           <div className="w-0.5 h-0.5 rounded-full bg-muted-foreground"></div>
           <p>
-            {dayjs(module.startDate).format('DD')} - {dayjs(module.endDate).format('DD MMM')}
+            {startDate.format(dateFormat)} - {endDate.format(dateFormat)}
           </p>
         </div>
         {isStudent && <CustomBadge status={badgeVariant}>{module.currentStatus}</CustomBadge>}
