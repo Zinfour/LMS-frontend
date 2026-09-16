@@ -1,4 +1,5 @@
 import ModuleCard from '@/components/ModuleCard';
+import ModuleDialog from '@/components/ModuleDialog';
 import CustomLink from '@/components/CustomLink';
 import { Button, buttonVariants } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
@@ -118,16 +119,30 @@ export default function CourseScreenContent({ course }: Props) {
         </CardContent>
       </Card>
       <section className="mt-10 max-w-7xl">
-        <h1 className="text-xl font-bold mb-4">Modules</h1>
+        <div className="flex items-center justify-between mb-4">
+          <h1 className="text-xl font-bold">Modules</h1>
+          {!isStudent && <ModuleDialog courseId={course.id} userId={user.id} />}
+        </div>
         <div className="grid-cols-1 lg:grid-cols-2 grid gap-3">
           {course.modules.map((module) => (
-            <CustomLink
-              className="flex hover:-translate-y-0.5 transition-transform duration-150"
-              key={module.id}
-              to={`${module.id}`}
-              disabled={isStudent && module.currentStatus === 'locked'}>
-              <ModuleCard module={module} />
-            </CustomLink>
+            <div key={module.id} className="relative flex">
+              <CustomLink
+                className="flex flex-1 hover:-translate-y-0.5 transition-transform duration-150"
+                to={`${module.id}`}
+                disabled={isStudent && module.currentStatus === 'locked'}>
+                <ModuleCard module={module} />
+              </CustomLink>
+              
+              {!isStudent && (
+                <div className="absolute top-4 right-4 z-10">
+                  <ModuleDialog
+                    courseId={course.id}
+                    userId={user.id}
+                    moduleId={module.id}
+                  />
+                </div>
+              )}
+            </div>
           ))}
         </div>
       </section>
