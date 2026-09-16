@@ -1,6 +1,6 @@
 import { useQuery } from '@tanstack/react-query';
 import { api } from '@/api';
-import type { DatabaseUser, ResourceType } from '@/types';
+import type { ActivityType, DatabaseUser, ResourceType } from '@/types';
 
 export interface ModuleDetails {
   id: number;
@@ -22,7 +22,7 @@ export interface Activity {
   id: number;
   createdAt: string;
   updatedAt: string;
-  type?: string;
+  type?: ActivityType;
   name: string;
   startTime: string;
   endTime: string;
@@ -46,7 +46,7 @@ interface Resource {
   description: string;
 }
 
-interface ModuleResource extends Resource {
+export interface ModuleResource extends Resource {
   moduleId: number;
 }
 

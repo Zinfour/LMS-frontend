@@ -9,9 +9,11 @@ import ActivityCard from '@/components/ActivityCard';
 import { Progress } from '@/components/ui/progress';
 import { buttonVariants } from '@/components/ui/button';
 import CustomLink from '@/components/CustomLink';
-import { cn } from '@/lib/utils';
 import Loading from '@/components/Loading';
 import Error from '@/components/Error';
+import ResourceCard from '@/components/ResourceCard';
+import ActivityDialog from '@/components/ActivityDialog';
+import ResourceDialog from '@/components/ResourceDialog';
 
 export default function CourseModule() {
   const user = usePersistentStore((state) => state.user!);
@@ -38,9 +40,11 @@ export default function CourseModule() {
     );
   }
 
+  const isTeacher = user.role === 'teacher';
+
   return (
     <div className="py-6 px-2 flex gap-6 xl:gap-10 flex-col xl:flex-row">
-      <div className="flex-1">
+      <div className="flex-1 space-y-4">
         <section>
           <div className="flex items-center gap-2 text-muted-foreground text-xs font-light">
             <p>
@@ -55,7 +59,7 @@ export default function CourseModule() {
           <h1 className="text-4xl font-bold mt-2 mb-4">{module.name}</h1>
           <p className="text-muted-foreground text-sm font-light leading-relaxed">{module.description}</p>
         </section>
-        <section className="mt-8">
+        <section className="mt-4">
           <div className="flex items-center justify-between">
             <h2 className="text-xl font-semibold mb-4">Activities</h2>
             <p className="text-muted-foreground text-xs font-light">
@@ -65,14 +69,22 @@ export default function CourseModule() {
           <Card className="gap-0 py-0">
             {module.activities.map((activity, index) => (
               <React.Fragment key={activity.id}>
-                <Link className="hover:scale-101 hover:translate-x-1 transition-transform" to={`${activity.id}`}>
-                  <ActivityCard activity={activity} idOfCurrentActivity={module.idOfCurrentActivity} />
-                </Link>
+                <div className="relative hover:scale-101 hover:translate-x-1 transition-transform">
+                  <Link to={`${activity.id}`}>
+                    <ActivityCard activity={activity} idOfCurrentActivity={module.idOfCurrentActivity} />
+                  </Link>
+                  {isTeacher && (
+                    <div className="absolute right-2 bottom-1">
+                      <ActivityDialog moduleId={module.id} activity={activity} />
+                    </div>
+                  )}
+                </div>
                 {index < module.activities.length - 1 && <Separator className="h-px" />}
               </React.Fragment>
             ))}
           </Card>
         </section>
+        <ActivityDialog moduleId={module.id} />
       </div>
       <div className="xl:w-[30%] xl:max-w-85 flex xl:flex-col gap-4">
         <Card className="hidden sm:flex flex-2 xl:flex-none">
@@ -100,30 +112,34 @@ export default function CourseModule() {
             <p className="text-muted-foreground text-xs font-light">RESOURCES</p>
           </CardHeader>
           <CardContent>
-            <ul>
-              {module.resources.map((resource) => (
-                <li className="mb-4 last:mb-0" key={resource.id}>
-                  <a
-                    href={resource.url}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className={cn(
-                      'flex items-center gap-4 hover:-translate-y-0.5 transition-transform duration-150',
-                      !resource.url && 'pointer-events-none opacity-50',
-                    )}>
-                    <div className="w-11 h-11 flex min-w-11 items-center justify-center bg-accent rounded-lg border-accent-foreground/20 border">
-                      <p className="text-accent-foreground text-xs font-semibold">
-                        {resource.resourceType.slice(0, 3)}
-                      </p>
-                    </div>
-                    <div>
-                      <h4 className="font-medium text-sm mb-0.5 line-clamp-1">{resource.name}</h4>
-                      <p className="text-muted-foreground text-xs line-clamp-2">{resource.description}</p>
-                    </div>
-                  </a>
-                </li>
-              ))}
-            </ul>
+            <div className="grid grid-cols-[repeat(auto-fit,minmax(15rem,1fr))] gap-4">
+              {module.resources
+                .filter(
+                  (resource) =>
+                    resource.resourceType === 'Link' ||
+                    resource.resourceType === 'Reference' ||
+                    resource.resourceType === 'Summary',
+                )
+                .map(
+                  (resource) =>
+                    resource.url && (
+                      <ResourceCard
+                        key={resource.id}
+                        resource={{
+                          name: resource.name,
+                          url: resource.url,
+                          description: resource.description,
+                        }}
+                        editDialog={
+                          isTeacher ? (
+                            <ResourceDialog moduleId={module.id} resourceType="Link" resource={resource} />
+                          ) : undefined
+                        }
+                      />
+                    ),
+                )}
+              {isTeacher && <ResourceDialog moduleId={module.id} resourceType="Link" buttonText="+ Add link" />}
+            </div>
           </CardContent>
         </Card>
       </div>
